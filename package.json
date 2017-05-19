@@ -1,0 +1,34 @@
+{
+  "name": "ukor",
+  "version": "0.1.0",
+  "description": "Roku build tool with flavors and deployment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "roku",
+    "build",
+    "tool",
+    "rokudev",
+    "deployment",
+    "flavor"
+  ],
+  "author": "slheavner",
+  "license": "Apache-2.0",
+  "bin": {
+    "ukor": "./index.js"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    }
+  },
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
