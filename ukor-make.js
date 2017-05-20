@@ -2,25 +2,12 @@
 
 var program = require('commander')
 var properties = require('./properties')
+const make = require('./commands/make')
 
 
 program
   .parse(process.argv)
 
-if (program.args.length == 0) {
-  properties.flavors.forEach(str => {
-    bundleFlavor(str)
-  })
-} else {
-  properties.args.forEach(str => {
-    bundleFlavor(str)
-  })
-}
+console.log(program)
+make.run(properties, process)
 
-function bundleFlavor(flavor) {
-  if (properties.flavors.includes(flavor)) {
-
-  } else {
-    console.error('cannot find flavor: ' + flavor)
-  }
-}
