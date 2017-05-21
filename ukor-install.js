@@ -11,7 +11,7 @@ program.arguments('[flavor] [roku]')
   .parse(process.argv)
 
 let args = program.args
-var options = {
+let options = {
   flavor: properties.defaults['flavor'],
   roku: properties.defaults['roku'],
   auth: null

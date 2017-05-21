@@ -3,7 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const log = require('./utils/log')
-var program = require('commander')
+const program = require('commander')
 
 program
   .command('make [flavors...]',

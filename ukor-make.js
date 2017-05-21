@@ -12,7 +12,7 @@ program
   .parse(process.argv)
 
 let args = program.args
-var out = null
+let out = null
 if (program['out']) {
   out = program['out']
 }

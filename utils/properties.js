@@ -8,6 +8,7 @@ const ajv = new(require('ajv'))({
 const log = require('./log')
 const pretty = require('prettyjson')
 const schema = require('./schema')
+let properties = null
 
 function readProperties() {
   log.verbose('reading ./ukor.properties...')
@@ -27,8 +28,8 @@ function readProperties() {
   }
   log.verbose('ukor.local:\n%s', pretty.render(local))
   properties = merge(normal, local)
-  var validate = ajv.compile(schema)
-  var valid = validate(properties)
+  let validate = ajv.compile(schema)
+  let valid = validate(properties)
   if (!valid) {
     log.error('errors in properties')
     validate.errors.forEach(err => {
@@ -41,7 +42,7 @@ function readProperties() {
 }
 
 function getFlavors() {
-  var flavors = []
+  let flavors = []
   try {
     fs.readdirSync(properties.sourceDir).forEach(file => {
       if (file !== 'main' && fs.lstatSync(path.join(properties.sourceDir,

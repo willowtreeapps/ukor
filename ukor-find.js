@@ -6,7 +6,7 @@ program
   .option('-t, --timeout <seconds>', 'Time to scan in seconds')
   .parse(process.argv)
 
-var t = 5
+let t = 5
 if (program['timeout']) {
   t = program.timeout
 }

@@ -8,8 +8,8 @@ const find = require('./find')
 
 
 function upload(options, ip) {
-  let zip = path.join(properties.buildDir, options.flavor + '.zip')
-  let form = {
+  const zip = path.join(properties.buildDir, options.flavor + '.zip')
+  const form = {
     mysubmit: 'replace',
     archive: fs.createReadStream(zip)
   }
@@ -22,8 +22,8 @@ function upload(options, ip) {
     if (err) {
       log.error(err)
     } else {
-      var message = null
-      var messageRegex = /\.trigger\('Set message content', '(.*?)'/g
+      let message = null
+      let messageRegex = /\.trigger\('Set message content', '(.*?)'/g
       while (message = messageRegex.exec(response.body)) {
         log.info(message[1])
       }
@@ -50,7 +50,7 @@ module.exports = {
         if (utils.parseRoku(options.roku) == 'ip') {
           upload(options, options.roku)
         } else {
-          var usn = ''
+          let usn = ''
           if (utils.parseRoku(options.roku) == 'name') {
             usn = properties.rokus[options.roku].id
           } else {
