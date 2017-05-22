@@ -26,8 +26,12 @@ function readProperties() {
     log.error('failed to read ./ukor.local')
     log.error(e.message)
   }
-  log.verbose('ukor.local:\n%s', pretty.render(local))
-  properties = merge(normal, local)
+  if (local) {
+    log.verbose('ukor.local:\n%s', pretty.render(local))
+    properties = merge(normal, local)
+  } else {
+    properties = normal
+  }
   let validate = ajv.compile(schema)
   let valid = validate(properties)
   if (!valid) {

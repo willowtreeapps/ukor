@@ -50,6 +50,7 @@ Usage: ukor [options] [command]
     install [flavor] [roku]  Bundle then deploy your channel to a named roku
     find                     Search for rokus on the network
     validate                 Validate ukor.properties and ukor.local
+    init                     Initialize a ukor project
     help [cmd]               display help for [cmd]
 
   Options:
