@@ -14,6 +14,7 @@ program
     'Package a channel flavor with a roku device')
   .command('find', 'Search for rokus on the network')
   .command('init', 'Initialize a ukor project')
+  .command('test', 'Run the tests')
   .command('validate', 'Validate ukor.properties and ukor.local')
   .option('-v, --verbose', 'Turn on verbose logging')
   .option('--debug', 'Turn on debug logging')

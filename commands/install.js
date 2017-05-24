@@ -5,9 +5,10 @@ const log = require('../utils/log')
 const utils = require('../utils/utils')
 const path = require('path')
 const find = require('./find')
+const properties = require('../utils/properties')
 
 
-function upload(options, ip) {
+function upload(options, ip, callback) {
   const zip = path.join(properties.buildDir, options.flavor + '.zip')
   const form = {
     mysubmit: 'replace',
@@ -28,6 +29,7 @@ function upload(options, ip) {
         log.info(message[1])
       }
     }
+    callback ? callback(ip, body != null) : null
   })
 }
 
@@ -44,11 +46,11 @@ function validateOptions(options) {
 
 
 module.exports = {
-  install: (options) => {
+  install: (options, callback) => {
     if (validateOptions(options)) {
       make.make(options.flavor, null, () => {
         if (utils.parseRoku(options.roku) == 'ip') {
-          upload(options, options.roku)
+          upload(options, options.roku, callback)
         } else {
           let usn = ''
           if (utils.parseRoku(options.roku) == 'name') {
@@ -57,11 +59,13 @@ module.exports = {
             usn = options.roku
           }
           find.usn(usn, 5, (ip) => {
-            ip ? upload(options, ip) : log.error(
+            ip ? upload(options, ip, callback) : log.error(
               'unable to find roku on network')
           })
         }
       })
+    } else {
+      callback ? callback() : null
     }
   }
 }

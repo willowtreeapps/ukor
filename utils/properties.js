@@ -23,8 +23,7 @@ function readProperties() {
   try {
     var local = yaml.safeLoad(fs.readFileSync('./ukor.local'))
   } catch (e) {
-    log.error('failed to read ./ukor.local')
-    log.error(e.message)
+    log.warn('failed to read ./ukor.local')
   }
   if (local) {
     log.verbose('ukor.local:\n%s', pretty.render(local))
