@@ -59,13 +59,12 @@ module.exports = {
             usn = options.roku
           }
           find.usn(usn, 5, (ip) => {
-            ip ? upload(options, ip, callback) : log.error(
-              'unable to find roku on network')
+            ip ? upload(options, ip, callback) : null
           })
         }
       })
     } else {
-      callback ? callback() : null
+      callback ? callback('', false) : null
     }
   }
 }
