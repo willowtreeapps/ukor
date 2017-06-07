@@ -21,7 +21,7 @@ let options = {
   flavor: properties.defaults['flavor'],
   roku: properties.defaults['roku'],
   auth: null,
-  port: '0',
+  port: '8080',
   url: null
 }
 if (program['flavor']) {
@@ -44,14 +44,11 @@ if (options.roku == null ||
 if (utils.parseRoku(options.roku) == 'name' && Object.keys(properties.rokus).includes(options.roku)) {
   options.auth = properties.rokus[options.roku].auth
 }
-if (program['auth']) {
-  options.auth = program.auth
+if (program['auth']){
+  options.auth = utils.parseAuth(program.auth)
 }
 if (!options.auth) {
   log.error('No auth for roku')
-}
-if (program['auth'] && utils.parseAuth(program.auth)) {
-  options.auth = program.auth
 }
 if (options.auth == null) {
   log.error('no auth given')

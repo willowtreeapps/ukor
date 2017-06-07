@@ -7,7 +7,7 @@ module.exports = {
         '\S*': {
           type: 'object',
           properties: {
-            id: { 
+            serial: { 
               type: 'string',
               pattern: '^[A-Za-z0-9]{12}$'   
             },
@@ -20,7 +20,7 @@ module.exports = {
               required: ['user', 'pass']
             }
           },
-          required: ['id', 'auth']
+          required: ['serial', 'auth']
         }
       }
     },

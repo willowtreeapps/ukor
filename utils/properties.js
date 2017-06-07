@@ -50,7 +50,7 @@ function getFlavors() {
   let flavors = []
   try {
     fs.readdirSync(properties.sourceDir).forEach(file => {
-      if (file !== 'main' && fs.lstatSync(path.join(properties.sourceDir,
+      if (fs.lstatSync(path.join(properties.sourceDir,
           file)).isDirectory()) {
         flavors.push(file)
       }
