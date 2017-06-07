@@ -13,7 +13,7 @@ program
   .command('package <flavor> <roku>',
     'Package a channel flavor with a roku device')
   .command('find', 'Search for rokus on the network')
-  .command('init', 'Initialize a ukor project')
+  .command('init [flavors...]', 'Initialize a ukor project')
   .command('test', 'Run the tests')
   .command('validate', 'Validate ukor.properties and ukor.local')
   .option('-v, --verbose', 'Turn on verbose logging')

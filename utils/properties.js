@@ -18,8 +18,10 @@ function readProperties() {
     log.error('failed to read ./ukor.properties')
     log.error(e.message)
   }
-  log.verbose('ukor.properties:\n%s', pretty.render(normal))
-  log.verbose('reading ./ukor.local')
+  if (normal) {
+    log.verbose('ukor.properties:\n%s', pretty.render(normal))
+    log.verbose('reading ./ukor.local')
+  }
   try {
     var local = yaml.safeLoad(fs.readFileSync('./ukor.local'))
   } catch (e) {
@@ -29,7 +31,7 @@ function readProperties() {
     log.verbose('ukor.local:\n%s', pretty.render(local))
     properties = merge(normal, local)
   } else {
-    properties = normal
+    properties = normal || {}
   }
   let validate = ajv.compile(schema)
   let valid = validate(properties)

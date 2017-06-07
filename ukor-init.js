@@ -7,6 +7,9 @@ try {
   fs.mkdir('./src/main', () => {
     log.info('created ./src/main directory')
   })
+  fs.mkdir('./src/test', () => {
+    log.info('created ./src/main directory')
+  })
 } catch (e) {
   log.error(e.message)
 }

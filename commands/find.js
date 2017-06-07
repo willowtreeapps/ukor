@@ -8,13 +8,15 @@ const xmlMatcher = /<(.*?)>(.*?)</g
 module.exports = {
   scan: (timeout, callback) => {
     log.info('searching for rokus for %d seconds...', timeout)
-    var client = new ssdp()
+    var client = new ssdp({
+      explicitSocketBind: true,
+      unicastBindPort: 1900
+    })
     var rokus = {}
     client.on('response', function(headers, stats, rinfo) {
       let usn = headers.USN.replace('uuid:roku:ecp:', '')
       if (!rokus[usn]) {
         rokus[usn] = rinfo.address
-        log.info('found roku: %s at %s', usn, rinfo.address)
         request.get('http://' + rinfo.address + ':8060/query/device-info', (err, response, body) => {
           if (response) {
             roku = {}
@@ -22,7 +24,7 @@ module.exports = {
             while (match = xmlMatcher.exec(response.body)) {
               roku[usn][match[1]] = match[2]
             }
-            log.pretty('info', '', roku)
+            log.info('found %s : %s', roku[usn]['model-name'], roku[usn]['serial-number'])
           }
         })
       }
