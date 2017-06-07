@@ -1,17 +1,32 @@
 const ssdp = require('node-ssdp').Client
 const log = require('../utils/log')
+const request = require('request')
 const properties = require('../utils/properties')
+const xmlMatcher = /<(.*?)>(.*?)</g
+
 
 module.exports = {
   scan: (timeout, callback) => {
     log.info('searching for rokus for %d seconds...', timeout)
-    var client = new ssdp()
+    var client = new ssdp({
+      explicitSocketBind: true,
+      unicastBindPort: 1900
+    })
     var rokus = {}
     client.on('response', function(headers, stats, rinfo) {
-      var usn = headers.USN.replace('uuid:roku:ecp:', '')
+      let usn = headers.USN.replace('uuid:roku:ecp:', '')
       if (!rokus[usn]) {
         rokus[usn] = rinfo.address
-        log.info('found roku: %s at %s', usn, rinfo.address)
+        request.get('http://' + rinfo.address + ':8060/query/device-info', (err, response, body) => {
+          if (response) {
+            roku = {}
+            roku[usn] = {}
+            while (match = xmlMatcher.exec(response.body)) {
+              roku[usn][match[1]] = match[2]
+            }
+            log.info('found %s : %s', roku[usn]['model-name'], roku[usn]['serial-number'])
+          }
+        })
       }
     })
     setTimeout(() => {
@@ -24,6 +39,7 @@ module.exports = {
     var client = new ssdp()
     var roku = null
     client.on('response', function(headers, stats, rinfo) {
+      log.pretty('verbose', 'headers: ', headers)
       if (!roku && headers.USN == 'uuid:roku:ecp:' + id) {
         log.info('found roku: %s at %s', id, rinfo.address)
         roku = rinfo.address

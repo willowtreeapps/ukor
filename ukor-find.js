@@ -12,7 +12,7 @@ if (program['timeout']) {
 }
 
 if (program.args.length == 0) {
-  find.scan(5)
+  find.scan(t)
 } else {
-  find.usn(program.args[0])
+  find.usn(program.args[0], t)
 }

@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const properties = require('./properties')
+const log = require('./log')
 const matchers = {
   ip: /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/,
   usn: /^[A-Z0-9]{12}$/
@@ -27,5 +28,11 @@ module.exports = {
       }
     }
     return null
+  },
+  continueIfExists: (object, message) => {
+    if (!object) {
+      log.error(message)
+      process.exit(-1)
+    }
   }
 }

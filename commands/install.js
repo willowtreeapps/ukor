@@ -5,9 +5,10 @@ const log = require('../utils/log')
 const utils = require('../utils/utils')
 const path = require('path')
 const find = require('./find')
+const properties = require('../utils/properties')
 
 
-function upload(options, ip) {
+function upload(options, ip, callback) {
   const zip = path.join(properties.buildDir, options.flavor + '.zip')
   const form = {
     mysubmit: 'replace',
@@ -28,12 +29,13 @@ function upload(options, ip) {
         log.info(message[1])
       }
     }
+    callback ? callback(ip, body != null) : null
   })
 }
 
 function validateOptions(options) {
   if (options['roku'] && options['flavor'] && options['auth'] && options['auth']
-    ['user'] && options['auth']['user']) {
+  ['user'] && options['auth']['user']) {
     if (properties.isFlavor(options.flavor) && utils.parseRoku(options.roku)) {
       return true
     }
@@ -42,26 +44,42 @@ function validateOptions(options) {
   return false
 }
 
+function doInstall(test, options, callback) {
+  let onmake = () => {
+    if (utils.parseRoku(options.roku) == 'ip') {
+      upload(options, options.roku, callback)
+    } else {
+      let usn = ''
+      if (utils.parseRoku(options.roku) == 'name') {
+        usn = properties.rokus[options.roku].serial
+      } else {
+        usn = options.roku
+      }
+      find.usn(usn, 5, (ip) => {
+        ip ? upload(options, ip, callback) : null
+      })
+    }
+  }
+  if (test) {
+    make.makeTest(options.flavor, options.buildDir, onmake)
+  }else{
+    make.make(options.flavor, options.buildDir, onmake)
+  }
+}
 
 module.exports = {
-  install: (options) => {
+  install: (options, callback) => {
     if (validateOptions(options)) {
-      make.make(options.flavor, null, () => {
-        if (utils.parseRoku(options.roku) == 'ip') {
-          upload(options, options.roku)
-        } else {
-          let usn = ''
-          if (utils.parseRoku(options.roku) == 'name') {
-            usn = properties.rokus[options.roku].id
-          } else {
-            usn = options.roku
-          }
-          find.usn(usn, 5, (ip) => {
-            ip ? upload(options, ip) : log.error(
-              'unable to find roku on network')
-          })
-        }
-      })
+      doInstall(false, options, callback)
+    } else {
+      callback ? callback('', false) : null
+    }
+  },
+  installTest: (options, callback) => {
+    if (validateOptions(options)) {
+      doInstall(true, options, callback)
+    } else {
+      callback ? callback('', false) : null
     }
   }
 }
