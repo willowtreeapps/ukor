@@ -18,15 +18,17 @@ Features:
   - main/
   - flavor1/
   - flavor2/
+  - test/
+  - testflavor1/
 - ukor.properties
 - ukor.local
 ```
 
-### Exmaple properties
+### Exmaple properties (yaml)
 ```yaml
 rokus:
   customName:
-    id: serial
+    serial: ABC123
     auth:
       user: username
       pass: password
@@ -51,6 +53,7 @@ Usage: ukor [options] [command]
     find                     Search for rokus on the network
     validate                 Validate ukor.properties and ukor.local
     init                     Initialize a ukor project
+    test                     Install, then run test on a Roku, and receive results on http
     help [cmd]               display help for [cmd]
 
   Options:
