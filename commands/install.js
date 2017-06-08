@@ -41,6 +41,7 @@ function validateOptions(options) {
     }
   }
   log.pretty('error', 'cannot validate options: ', options)
+  process.exit(-1)
   return false
 }
 

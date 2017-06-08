@@ -27,6 +27,9 @@ let options = {
 if (program['flavor']) {
   options.flavor = program.flavor
 }
+if(args.length > 0){
+  options.flavor = args[0]
+}
 if (options.flavor == null || options.flavor == '') {
   log.error('no flavor selected')
 }
