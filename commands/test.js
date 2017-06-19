@@ -17,7 +17,7 @@ function runLogServer(ip, port, timeout, callback) {
       try {
         body = Buffer.concat(body).toString();
         let stats = JSON.parse(body);
-        log.pretty("info", "", stats);
+        //log.pretty("info", "", stats);
         writeJunit(stats);
         if (stats) {
           log.info("------------");
@@ -71,6 +71,7 @@ function runLogServer(ip, port, timeout, callback) {
 }
 
 function writeJunit(stats) {
+  log.info("building junit xml");
   const xml = new XMLWriter();
   xml.startDocument();
   xml
@@ -103,8 +104,10 @@ function writeJunit(stats) {
   xml.endElement();
   xml.endDocument();
   mkdirp("./out/tests");
+  log.info("writing ./out/tests/ukorTests.xml and .junit");
   fs.writeFileSync("./out/tests/ukorTests.junit", xml.toString());
   fs.writeFileSync("./out/tests/ukorTests.xml", xml.toString());
+  log.info("successfully wrote junit xml");
 }
 
 function runTests(ip, auth, port, callback) {
