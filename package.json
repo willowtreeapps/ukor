@@ -45,6 +45,7 @@
     "requests": "^0.1.7",
     "roku": "^0.2.0",
     "telnet-client": "^0.14.0",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "xml-writer": "^1.7.0"
   }
 }
