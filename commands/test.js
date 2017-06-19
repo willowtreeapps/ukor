@@ -49,6 +49,9 @@ function runLogServer(ip, port, timeout, callback) {
             stats.fail,
             stats.crash
           );
+          if (stats.fail > 0) {
+            process.exit(-1);
+          }
         }
         callback ? callback(stats) : null;
         res.statusCode = "200";
