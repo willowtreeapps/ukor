@@ -2,7 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const merge = require('object-merge')
 const yaml = require('js-yaml')
-const ajv = new(require('ajv'))({
+const ajv = new (require('ajv'))({
   useDefaults: true
 })
 const log = require('./log')
@@ -11,7 +11,7 @@ const schema = require('./schema')
 let properties = null
 
 function readProperties() {
-  log.verbose('reading ./ukor.properties...')
+  log.debug('reading ./ukor.properties...')
   try {
     var normal = yaml.safeLoad(fs.readFileSync('./ukor.properties'))
   } catch (e) {
@@ -19,8 +19,8 @@ function readProperties() {
     log.error(e.message)
   }
   if (normal) {
-    log.verbose('ukor.properties:\n%s', pretty.render(normal))
-    log.verbose('reading ./ukor.local')
+    log.debug('ukor.properties:\n%s', pretty.render(normal))
+    log.debug('reading ./ukor.local')
   }
   try {
     var local = yaml.safeLoad(fs.readFileSync('./ukor.local'))
@@ -28,7 +28,7 @@ function readProperties() {
     log.warn('failed to read ./ukor.local')
   }
   if (local) {
-    log.verbose('ukor.local:\n%s', pretty.render(local))
+    log.debug('ukor.local:\n%s', pretty.render(local))
     properties = merge(normal, local)
   } else {
     properties = normal || {}
@@ -41,7 +41,7 @@ function readProperties() {
       log.error(err.dataPath + ' ' + err.message)
     })
   } else {
-    log.verbose('valid properties:\n%s', pretty.render(properties))
+    log.debug('valid properties:\n%s', pretty.render(properties))
   }
   properties.flavors = getFlavors()
 }
@@ -50,8 +50,7 @@ function getFlavors() {
   let flavors = []
   try {
     fs.readdirSync(properties.sourceDir).forEach(file => {
-      if (fs.lstatSync(path.join(properties.sourceDir,
-          file)).isDirectory()) {
+      if (fs.lstatSync(path.join(properties.sourceDir, file)).isDirectory()) {
         flavors.push(file)
       }
     })
@@ -61,8 +60,8 @@ function getFlavors() {
   return flavors
 }
 readProperties()
-properties.isFlavor = (flavor) => {
-  return (properties.flavors.includes(flavor))
+properties.isFlavor = flavor => {
+  return properties.flavors.includes(flavor)
 }
 
 module.exports = properties

@@ -3,6 +3,7 @@ const pretty = require('prettyjson')
 winston.remove(winston.transports.Console)
 winston.add(winston.transports.Console, {
   colorize: true,
+  level: global.logLevel || 'info'
 })
 winston.pretty = (level, msg, object) => {
   winston.log(level, msg + '\n%s', pretty.render(object))

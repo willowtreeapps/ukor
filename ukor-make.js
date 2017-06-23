@@ -1,29 +1,30 @@
 #!/usr/bin/env node
 
-const program = require('commander')
+const program = require('./utils/log-commander')
 const log = require('./utils/log')
 const properties = require('./utils/properties')
 const make = require('./commands/make')
 
-
 program
   .arguments('[flavors...]')
-  .option('-o, --out', 'Specify a different build directory')
+  .option('-o, --out <out>', 'Specify a different build directory')
+  .option('-l, --label <name>', 'Append a string to the zip name')
   .parse(process.argv)
 
 let args = program.args
-let out = null
-if (program['out']) {
-  out = program['out']
-}
+let build = program.out || properties.buildDir
+let name = program.label || ''
+let options = { build, name }
 if (args.length > 0) {
   args.forEach(flavor => {
     if (properties.isFlavor(flavor)) {
-      make.make(flavor, out)
+      options.flavor = flavor
+      make.make(options, () => {})
     } else {
       log.error('"' + flavor + '" is not a valid flavor')
     }
   })
 } else {
-  make.makeAll(out)
+  log.info('make all')
+  make.makeAll(options, () => {})
 }

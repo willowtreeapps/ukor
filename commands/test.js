@@ -14,22 +14,36 @@ function runLogServer(ip, port, timeout, callback) {
       try {
         body = Buffer.concat(body).toString()
         let stats = JSON.parse(body)
-        if(stats) {
+        if (stats) {
           log.info('------------')
           log.info('Test Results')
-          log.info('Pass: %d | Fail: %d | Crash: %d', stats.correct, stats.fail, stats.crash)
+          log.info(
+            'Pass: %d | Fail: %d | Crash: %d',
+            stats.correct,
+            stats.fail,
+            stats.crash
+          )
           log.info('===================================')
           stats.suites.forEach(suite => {
             log.info('%s: %d tests', suite.name, suite.tests.length)
             suite.tests.forEach(test => {
               log.info('\t%s: %s', test.name, test.result)
-              if(test.result != "Success") {
-                log.info('\t\tError %d: %s', test.error.code, test.error.message)
+              if (test.result != 'Success') {
+                log.info(
+                  '\t\tError %d: %s',
+                  test.error.code,
+                  test.error.message
+                )
               }
             })
             log.info('---------------------------------')
           })
-          log.info('Pass: %d | Fail: %d | Crash: %d', stats.correct, stats.fail, stats.crash)
+          log.info(
+            'Pass: %d | Fail: %d | Crash: %d',
+            stats.correct,
+            stats.fail,
+            stats.crash
+          )
         }
         callback ? callback(stats) : null
         res.statusCode = '200'
@@ -50,19 +64,29 @@ function runLogServer(ip, port, timeout, callback) {
 
 function runTests(ip, auth, port, callback) {
   setTimeout(() => {
-    let url = 'http://' + ip + ':8060/launch/dev?RunTests=true&host=' + getIP.address() + '&port=' + port
-    log.verbose('starting tests with: %s', url)
-    request.post(url, {
+    let url =
+      'http://' +
+      ip +
+      ':8060/launch/dev?RunTests=true&host=' +
+      getIP.address() +
+      '&port=' +
+      port
+    log.debug('starting tests with: %s', url)
+    request.post(
+      url,
+      {
         auth: auth
-      },(err, response, body) => {
-      if (response.statusCode != 200) {
-        log.error('Error starting tests: %d', response.statusCode);
-        process.exit(-1)
-      } else {
-        log.info('Tests started')
+      },
+      (err, response, body) => {
+        if (response.statusCode != 200) {
+          log.error('Error starting tests: %d', response.statusCode)
+          process.exit(-1)
+        } else {
+          log.info('Tests started')
+        }
+        callback ? callback(response.statusCode == 200) : null
       }
-      callback ? callback(response.statusCode == 200) : null
-    })
+    )
   }, 3000)
 }
 
@@ -72,14 +96,14 @@ module.exports = {
       log.info('finished install, running tests')
       if (!success) return
       let port = options.port || '8086'
-      let server = runLogServer(ip, port, 5 * 60 * 1000, (results) => {
-        if(results){
+      let server = runLogServer(ip, port, 5 * 60 * 1000, results => {
+        if (results) {
           process.exit(0)
-        }else{
+        } else {
           process.exit(-1)
         }
       })
-      runTests(ip, options.auth, options.port, (success) => {
+      runTests(ip, options.auth, options.port, success => {
         if (!success) {
           logServer.close()
           process.exit(-1)
