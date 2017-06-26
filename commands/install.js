@@ -7,7 +7,6 @@ const path = require('path')
 const find = require('./find')
 const properties = require('../utils/properties')
 
-
 function upload(options, ip, callback) {
   const zip = path.join(properties.buildDir, options.flavor + '.zip')
   const form = {
@@ -15,27 +14,35 @@ function upload(options, ip, callback) {
     archive: fs.createReadStream(zip)
   }
   options.auth.sendImmediately = false
-  request.post({
-    url: 'http://' + ip + '/plugin_install',
-    formData: form,
-    'auth': options.auth
-  }, (err, response, body) => {
-    if (err) {
-      log.error(err)
-    } else {
-      let message = null
-      let messageRegex = /\.trigger\('Set message content', '(.*?)'/g
-      while (message = messageRegex.exec(response.body)) {
-        log.info(message[1])
+  request.post(
+    {
+      url: 'http://' + ip + '/plugin_install',
+      formData: form,
+      auth: options.auth
+    },
+    (err, response, body) => {
+      if (err) {
+        log.error(err)
+      } else {
+        let message = null
+        let messageRegex = /\.trigger\('Set message content', '(.*?)'/g
+        while ((message = messageRegex.exec(response.body))) {
+          log.info(message[1])
+        }
       }
+      callback ? callback(ip, body != null) : null
     }
-    callback ? callback(ip, body != null) : null
-  })
+  )
 }
 
 function validateOptions(options) {
-  if (options['roku'] && options['flavor'] && options['auth'] && options['auth']
-  ['user'] && options['auth']['user']) {
+  if (
+    options['roku'] &&
+    options['flavor'] &&
+    options['auth'] &&
+    options['auth']['user'] &&
+    options['auth']['user']
+  ) {
     if (properties.isFlavor(options.flavor) && utils.parseRoku(options.roku)) {
       return true
     }
@@ -56,15 +63,15 @@ function doInstall(test, options, callback) {
       } else {
         usn = options.roku
       }
-      find.usn(usn, 5, (ip) => {
+      find.usn(usn, 5, ip => {
         ip ? upload(options, ip, callback) : null
       })
     }
   }
   if (test) {
-    make.makeTest(options.flavor, options.buildDir, onmake)
-  }else{
-    make.make(options.flavor, options.buildDir, onmake)
+    make.makeTest({ flavor: options.flavor, build: options.buildDir }, onmake)
+  } else {
+    make.make({ flavor: options.flavor, build: options.buildDir }, onmake)
   }
 }
 

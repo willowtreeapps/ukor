@@ -1,50 +1,44 @@
 const install = require('./commands/install')
-const program = require('commander')
+const program = require('./utils/log-commander')
 const properties = require('./utils/properties')
 const utils = require('./utils/utils')
 const log = require('./utils/log')
 
-program.arguments('[flavor] [roku]')
-  .option('-r, --roku <name|id|ip>',
-    'Specify a roku. Ignored if passed as argument.')
+program
+  .arguments('[flavor] [roku]')
+  .option(
+    '-r, --roku <name|id|ip>',
+    'Specify a roku. Ignored if passed as argument.'
+  )
   .option('-a, --auth <user:pass>', 'Set username and password for roku.')
   .parse(process.argv)
 
 let args = program.args
+let flavor = args[0] || properties.defaults['flavor']
+let roku = args[1] || program.roku || properties.defaults.roku
+try {
+  var auth = program.auth || properties.rokus[roku]['auth']
+} catch (e) {
+  log.error('no auth defined for roku: ' + roku)
+  process.exit(-1)
+}
 let options = {
-  flavor: properties.defaults['flavor'],
-  roku: properties.defaults['roku'],
-  auth: null
+  flavor,
+  roku,
+  auth
 }
-if (args.length > 0) {
-  options.flavor = args[0]
-}
-if (!options['flavor']) {
-  log.error('No flavor specified!')
-  process.exit(-1)
-}
-if (program['roku']) {
-  options.roku = program['roku']
-}
-if (args.length > 1) {
-  options.roku = args[1]
-}
-if (!options['roku']) {
-  log.error('No roku specified!')
-  process.exit(-1)
-}
-if (program['auth']) {
-  options.auth = utils.parseAuth(program.auth)
-} else {
-  try {
-    options.auth = properties.rokus[options.roku]['auth']
-  } catch (e) {
-    log.error('cannot find auth for roku: %s', options.roku)
+for (let key in options) {
+  if (!options[key]) {
+    log.error('%s options is undefined')
+    log.pretty('error', 'options:', options)
     process.exit(-1)
   }
 }
-if (!options['auth']) {
-  log.error('invalid auth option: %s', program.auth)
-  process.exit(-1)
+
+if (program['verbose']) {
+  log.level = 'verbose'
+}
+if (program['debug']) {
+  log.level = 'debug'
 }
 install.install(options)

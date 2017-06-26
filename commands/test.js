@@ -17,7 +17,6 @@ function runLogServer(ip, port, timeout, callback) {
       try {
         body = Buffer.concat(body).toString();
         let stats = JSON.parse(body);
-        //log.pretty("info", "", stats);
         writeJunit(stats);
         if (stats) {
           log.info("------------");
@@ -113,13 +112,13 @@ function writeJunit(stats) {
 function runTests(ip, auth, port, callback) {
   setTimeout(() => {
     let url =
-      "http://" +
+      'http://' +
       ip +
-      ":8060/launch/dev?RunTests=true&host=" +
+      ':8060/launch/dev?RunTests=true&host=' +
       getIP.address() +
-      "&port=" +
-      port;
-    log.verbose("starting tests with: %s", url);
+      '&port=' +
+      port
+    log.debug('starting tests with: %s', url)
     request.post(
       url,
       {
@@ -141,16 +140,16 @@ function runTests(ip, auth, port, callback) {
 module.exports = {
   test: (options, callback) => {
     installer.installTest(options, (ip, success) => {
-      log.info("finished install, running tests");
-      if (!success) return;
-      let port = options.port || "8086";
+      log.info('finished install, running tests')
+      if (!success) return
+      let port = options.port || '8086'
       let server = runLogServer(ip, port, 5 * 60 * 1000, results => {
         if (results) {
-          process.exit(0);
+          process.exit(0)
         } else {
-          process.exit(-1);
+          process.exit(-1)
         }
-      });
+      })
       runTests(ip, options.auth, options.port, success => {
         if (!success) {
           logServer.close();
