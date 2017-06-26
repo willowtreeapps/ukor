@@ -8,7 +8,10 @@ const find = require('./find')
 const properties = require('../utils/properties')
 
 function upload(options, ip, callback) {
-  const zip = path.join(properties.buildDir, options.flavor + '.zip')
+  const zip = path.join(
+    properties.buildDir,
+    options.flavor + options.name + '.zip'
+  )
   const form = {
     mysubmit: 'replace',
     archive: fs.createReadStream(zip)
@@ -70,11 +73,14 @@ function doInstall(test, options, callback) {
   }
   if (test) {
     make.makeTest(
-      { flavor: options.flavor, build: options.buildDir, name: '_test' },
+      { flavor: options.flavor, build: options.buildDir, name: options.name },
       onmake
     )
   } else {
-    make.make({ flavor: options.flavor, build: options.buildDir }, onmake)
+    make.make(
+      { flavor: options.flavor, build: options.buildDir, name: options.name },
+      onmake
+    )
   }
 }
 

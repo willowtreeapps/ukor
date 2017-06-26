@@ -25,7 +25,8 @@ try {
 let options = {
   flavor,
   roku,
-  auth
+  auth,
+  name: ''
 }
 for (let key in options) {
   if (!options[key]) {

@@ -27,7 +27,8 @@ let options = {
   roku: properties.defaults['roku'],
   auth: null,
   port: '8080',
-  url: null
+  url: null,
+  name: '_test'
 }
 if (program['flavor']) {
   options.flavor = program.flavor
