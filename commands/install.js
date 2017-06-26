@@ -69,7 +69,10 @@ function doInstall(test, options, callback) {
     }
   }
   if (test) {
-    make.makeTest({ flavor: options.flavor, build: options.buildDir }, onmake)
+    make.makeTest(
+      { flavor: options.flavor, build: options.buildDir, name: '_test' },
+      onmake
+    )
   } else {
     make.make({ flavor: options.flavor, build: options.buildDir }, onmake)
   }
