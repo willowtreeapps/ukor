@@ -44,7 +44,7 @@ function validateOptions(options) {
     options['flavor'] &&
     options['auth'] &&
     options['auth']['user'] &&
-    options['auth']['user']
+    options['auth']['pass']
   ) {
     if (properties.isFlavor(options.flavor) && utils.parseRoku(options.roku)) {
       return true

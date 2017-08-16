@@ -18,6 +18,12 @@ let flavor = args[0] || properties.defaults['flavor']
 let roku = args[1] || program.roku || properties.defaults.roku
 try {
   var auth = program.auth || properties.rokus[roku]['auth']
+  if (typeof(auth) === 'string') {
+    auth = {
+      user: auth.split(":")[0],
+      pass: auth.split(":")[1]
+    }
+  }
 } catch (e) {
   log.error('no auth defined for roku: ' + roku)
   process.exit(-1)
@@ -29,7 +35,7 @@ let options = {
   name: ''
 }
 for (let key in options) {
-  if (!options[key]) {
+  if (!options[key] && key != 'name') {
     log.error('%s options is undefined')
     log.pretty('error', 'options:', options)
     process.exit(-1)
