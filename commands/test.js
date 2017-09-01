@@ -134,7 +134,7 @@ function runTests(ip, auth, port, callback) {
         callback ? callback(response.statusCode == 200) : null;
       }
     );
-  }, 3000);
+  }, 10*1000); //run tests 10 seconds after pushing
 }
 
 module.exports = {
