@@ -6,6 +6,8 @@ const yaml = require('js-yaml')
 const merge = require('object-merge')
 const properties = require('./properties')
 const os = require('os')
+const CLIEngine = require('bslint').CLIEngine
+const bsLintLogger = require('./bslint-logger')
 
 function getAllSourceFiles(dir) {
   let src = []
@@ -86,14 +88,28 @@ function insertConstants(src, constants, filename) {
   return src
 }
 
-function compile(directory, constants) {
+function compile(directory, constants, ignoreErrors) {
   let sourceFiles = getAllSourceFiles(directory)
-  //log.info(sourceFiles)
+
   sourceFiles.forEach(file => {
     let srcData = fs.readFileSync(file)
     let src = insertConstants(srcData.toString(), constants, file)
+
     fs.writeFileSync(file, src)
   })
+
+  runLinter(sourceFiles, ignoreErrors)
+}
+
+function runLinter(sourceFiles, ignoreErrors) {
+  const cliEngine = new CLIEngine()
+  const lint = cliEngine.executeOnFiles(sourceFiles)
+   
+  bsLintLogger.logResult(lint.results, ignoreErrors)
+
+  if (lint.errorCount > 0 && !ignoreErrors) {
+    process.exit(-1)
+  }
 }
 
 function mergeConstants(flavors) {

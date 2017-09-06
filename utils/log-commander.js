@@ -4,11 +4,19 @@ const log = require('./log')
 program
   .option('-v, --verbose', 'Turn on verbose logging')
   .option('--debug', 'Turn on debug logging')
-  .parse(process.argv)
-if (program['verbose']) {
-  log.level = 'verbose'
+
+let parser = program.parse
+
+program.__proto__.parse = function parse() {
+  parser.call(program, process.argv)
+
+  if (program['verbose']) {
+    log.level = 'verbose'
+  }
+  
+  if (program['debug']) {
+    log.level = 'debug'
+  }
 }
-if (program['debug']) {
-  log.level = 'debug'
-}
+
 module.exports = program
