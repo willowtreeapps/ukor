@@ -1,14 +1,12 @@
-'use strict';
-
 const log = require('./log')
 const EOL = require('os').EOL
 
 function isError(message) {
     if (message.fatal || message.severity === 2) {
-        return true;
+        return true
     }
 
-    return false;
+    return false
 }
 
 module.exports = {
@@ -32,8 +30,8 @@ module.exports = {
                 else {
                     log.warn(output)
                 }
-            });
-        });
+            })
+        })
 
         let summary,
             logger
