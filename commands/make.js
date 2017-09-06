@@ -40,12 +40,6 @@ function bundleFlavor(options, callback) {
   log.info('make flavor: ' + flavor)
   let zip = flavor + name + '.zip'
   mkdirp(build)
-  var out = fs.createWriteStream(path.join(build, zip))
-  var archive = archiver('zip')
-  if (callback) {
-    out.on('close', callback)
-  }
-  archive.pipe(out)
   var main = path.join(properties.sourceDir, properties.mainFlavor)
   var flavorDir = path.join(properties.sourceDir, flavor)
   let flavors = [main]
@@ -62,6 +56,12 @@ function bundleFlavor(options, callback) {
     temp,
     inserter.mergeConstants(include.concat('main', flavor))
   )
+  var out = fs.createWriteStream(path.join(build, zip))
+  var archive = archiver('zip')
+  if (callback) {
+    out.on('close', callback)
+  }
+  archive.pipe(out)
   archive.glob('**/*', {
     cwd: temp
   })
