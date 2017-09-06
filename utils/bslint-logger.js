@@ -10,7 +10,9 @@ function isError(message) {
 }
 
 module.exports = {
-    logResult(results) {
+    logResult(results, ignoreErrors) {
+        log.debug(`ignore errors:`, ignoreErrors)
+
         let errorTotal = 0,
             warningTotal = 0
 
@@ -22,7 +24,7 @@ module.exports = {
 
             messages.forEach(message => {
                 let output = `${result.filePath}(${message.line || 0},${message.column || 0}): ${message.message}`
-                output += message.ruleId ? ` [${message.ruleId}]` : ''
+                output += message.ruleId ? ` [${message.ruleId}]` : ``
 
                 if (isError(message)) {
                     log.error(output)
@@ -36,12 +38,19 @@ module.exports = {
         let summary,
             logger
 
-        if (errorTotal > 0) {
+        if (errorTotal > 0 && ignoreErrors !== true) {
             summary = `Build FAILED.${EOL}`
             logger = log.error
         }
         else {
-            summary = `Build succeeded.${EOL}`
+            summary = `Build succeeded`
+            
+            if (errorTotal > 0 && ignoreErrors === true) {
+                summary += `, with ignored errors`
+            }
+
+            summary += `.${EOL}`
+
             logger = log.info
         }
 

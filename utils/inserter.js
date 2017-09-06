@@ -88,7 +88,7 @@ function insertConstants(src, constants, filename) {
   return src
 }
 
-function compile(directory, constants) {
+function compile(directory, constants, ignoreErrors) {
   let sourceFiles = getAllSourceFiles(directory)
 
   sourceFiles.forEach(file => {
@@ -98,16 +98,16 @@ function compile(directory, constants) {
     fs.writeFileSync(file, src)
   })
 
-  runLinter(sourceFiles)
+  runLinter(sourceFiles, ignoreErrors)
 }
 
-function runLinter(sourceFiles) {
+function runLinter(sourceFiles, ignoreErrors) {
   const cliEngine = new CLIEngine()
   const lint = cliEngine.executeOnFiles(sourceFiles)
    
-  bsLintLogger.logResult(lint.results)
+  bsLintLogger.logResult(lint.results, ignoreErrors)
 
-  if (lint.errorCount > 0) {
+  if (lint.errorCount > 0 && !ignoreErrors) {
     process.exit(-1)
   }
 }

@@ -54,7 +54,8 @@ function bundleFlavor(options, callback) {
   })
   inserter.compile(
     temp,
-    inserter.mergeConstants(include.concat('main', flavor))
+    inserter.mergeConstants(include.concat('main', flavor)),
+    options.ignoreErrors
   )
   var out = fs.createWriteStream(path.join(build, zip))
   var archive = archiver('zip')
