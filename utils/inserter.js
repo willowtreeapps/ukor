@@ -99,13 +99,12 @@ function compile(directory, constants) {
 function mergeConstants(flavors) {
   let constants = {}
   flavors.forEach(flavor => {
-    if (!properties.flavors.includes(flavor)) return
-    let dir = path.join(properties.sourceDir, flavor, 'constants.yaml')
+    let dir = path.join(flavor, 'constants.yaml')
     try {
       let c = yaml.safeLoad(fs.readFileSync(dir))
       if (c) constants = merge(constants, c)
     } catch (e) {
-      log.warn(`no constants found for ${flavor}`)
+      log.warn(`no constants found for ${dir}`)
     }
   })
   return constants

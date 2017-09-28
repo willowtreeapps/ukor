@@ -26,7 +26,7 @@ module.exports = {
                 roku[usn][match[1]] = match[2]
               }
               log.info(
-                'found %s : %s',
+                `found %s : %s : ${rinfo.address}`,
                 roku[usn]['model-name'],
                 roku[usn]['serial-number']
               )

@@ -24,6 +24,26 @@ module.exports = {
         }
       }
     },
+    flavors: {
+      type: 'object', 
+      default: {}, 
+      patternProperties: {
+        '\S*': {
+          type: 'object',
+          properties: {
+            base: { 
+              type: 'string',
+              default: '' 
+            },
+            src: {
+              type: 'array',
+              default: []
+            }
+          },
+          required: ['src']
+        }
+      }
+    },
     defaults:{
       type: 'object',
       default: {},

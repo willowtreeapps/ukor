@@ -11,8 +11,8 @@ const temp = '.ukor'
 
 function moveToTempDir(flavor) {
   mkdirp(temp)
-  if (properties.flavors.includes(flavor)) {
-    fse.copySync(path.join(properties.sourceDir, flavor), temp, {
+  if (fs.existsSync(flavor)) {
+    fse.copySync(flavor, temp, {
       filter: name => {
         if (
           name.endsWith('constants.yml') ||
@@ -31,9 +31,11 @@ function moveToTempDir(flavor) {
 }
 
 function bundleFlavor(options, callback) {
-  const flavor = options.flavor || 'main'
+  const flavor = options.flavor
+  let flavorSrc = properties.flavors[flavor].src
   const build = options.build || properties.buildDir
   const include = options.include || []
+  flavorSrc = include.concat(flavorSrc)
   let name = options.name
   if (!name) name = ''
   rimraf.sync(temp)
@@ -46,21 +48,14 @@ function bundleFlavor(options, callback) {
     out.on('close', callback)
   }
   archive.pipe(out)
-  var main = path.join(properties.sourceDir, properties.mainFlavor)
-  var flavorDir = path.join(properties.sourceDir, flavor)
-  let flavors = [main]
-  include.forEach(inc => {
+  let flavors = []
+  flavorSrc.forEach(inc => {
     flavors.push(path.join(properties.sourceDir, inc))
   })
-  if (flavorDir != main) {
-    flavors.push(flavorDir)
-  }
-  include.concat('main', flavor).forEach(flavor => {
-    moveToTempDir(flavor)
-  })
+  flavors.forEach(moveToTempDir)
   inserter.compile(
     temp,
-    inserter.mergeConstants(include.concat('main', flavor))
+    inserter.mergeConstants(flavors)
   )
   archive.glob('**/*', {
     cwd: temp
@@ -76,15 +71,15 @@ module.exports = {
   makeAll: function(options, callback) {
     var count = 0
     options.include = []
-    properties.flavors.forEach(flavor => {
+    for(flavor in properties.flavors){
       options.flavor = flavor
       bundleFlavor(options, () => {
         count++
-        if (count == properties.flavors.length) {
+        if (count == Object.keys(properties.flavors).length) {
           callback && typeof callback == 'function' ? callback() : null
         }
       })
-    })
+    }
   },
   makeTest: function(options, callback) {
     options.include = ['test', 'test' + options.flavor]
