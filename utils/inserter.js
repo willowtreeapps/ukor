@@ -6,8 +6,8 @@ const yaml = require('js-yaml')
 const merge = require('object-merge')
 const properties = require('./properties')
 const os = require('os')
-const CLIEngine = require('bslint').CLIEngine
-const bsLintLogger = require('./bslint-logger')
+const CLIEngine = require('wist').CLIEngine
+const wistLogger = require('./wist-logger')
 
 function getAllSourceFiles(dir) {
   let src = []
@@ -105,7 +105,7 @@ function runLinter(sourceFiles, ignoreErrors) {
   const cliEngine = new CLIEngine()
   const lint = cliEngine.executeOnFiles(sourceFiles)
    
-  bsLintLogger.logResult(lint.results, ignoreErrors)
+  wistLogger.logResult(lint.results, ignoreErrors)
 
   if (lint.errorCount > 0 && !ignoreErrors) {
     process.exit(-1)
