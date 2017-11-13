@@ -1,9 +1,9 @@
 - name: Wist
   description: An open source linting utility for BrightScript for building awesome Roku experiences.
-  url: https://github.com/willowtreeapps/wist
+  url: https://willowtreeapps.github.io/wist
   icon: wist-logo
 
 - name: Hinoki
   description: A <a href="http://langserver.org" title="Language Server Protocol">Language Server Protocol</a> implementation that provides features like autocomplete, go to definition, find all references, and more for BrightScript.
-  url: https://github.com/willowtreeapps/hinoki
+  url: https://willowtreeapps.github.io/hinoki
   icon: hinoki-logo
