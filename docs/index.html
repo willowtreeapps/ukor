@@ -1,0 +1,41 @@
+---
+layout: default
+homepage: true
+---
+
+<div class="jumbotron bg-white container">
+    <h1 id="home-title" class="display-3">Ukor <small class="text-right text-muted">v{{ site.current_version }}</small></h1>
+
+    <div id="home-blurb">
+        <p class="lead my-4">
+            A build management tool for Roku channels. Ukor supports <br/>
+            build flavors, automated unit test runs, and linting.
+        </p>
+
+        <p class="lead">
+            <a class="get-started" href="#">Get Started &rarr;</a>
+        </p>
+    </div>
+</div>
+
+<section id="integrations" class="bg-light">
+    <div class="container">
+        <div class="card-deck px-2 px-md-0">
+            {% for integrator in site.data.integrators %}
+                <div class="card bg-light border-0 flex-row">
+                    <a class="integrator-logo" href="{{ integrator.url }}" title="{{ integrator.name }}">
+                        {% include logos/{{integrator.icon}}.svg %}
+                    </a>
+
+                    <div class="card-body pt-0">
+                        <h4 class="card-title">
+                            <a href="{{ integrator.url }}" title="{{ integrator.name }}">{{ integrator.name }}</a>
+                        </h4>
+        
+                        <p class="card-text">{{ integrator.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>

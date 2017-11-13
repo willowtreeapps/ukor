@@ -1,0 +1,25 @@
+---
+---
+
+$wist-purple:   #7b00ff;
+$primary: $wist-purple;
+
+@import "wt-docs";
+
+.site-navigation {
+    &.navbar-light {
+        .navbar-brand {
+            svg g {
+                fill: none;
+                stroke: $primary;
+            }
+
+            @include hover-focus {
+                svg g {
+                    fill: none;
+                    stroke: transparentize($primary, 0.3);
+                }
+            }
+        }
+    }
+}
