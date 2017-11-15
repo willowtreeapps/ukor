@@ -2,19 +2,11 @@
   "name": "ukor",
   "version": "0.1.0",
   "description": "Roku build tool with flavors and deployment",
+  "keywords": ["roku", "brightscript", "build", "deployment", "flavor", "tool", "test", "init", "compiler"],
   "main": "ukor.js",
   "scripts": {
-    "docs": "./build/run-docs.sh",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docs": "./build/run-docs.sh"
   },
-  "keywords": [
-    "roku",
-    "build",
-    "tool",
-    "rokudev",
-    "deployment",
-    "flavor"
-  ],
   "author": "slheavner",
   "license": "Apache-2.0",
   "bin": {
