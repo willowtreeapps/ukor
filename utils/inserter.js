@@ -6,7 +6,7 @@ const yaml = require('js-yaml')
 const merge = require('object-merge')
 const properties = require('./properties')
 const os = require('os')
-const CLIEngine = require('wist').CLIEngine
+const CLIEngine = require('@willowtreeapps/wist').CLIEngine
 const wistLogger = require('./wist-logger')
 
 function getAllSourceFiles(dir) {
