@@ -10,7 +10,4 @@ layouts_dir: resources/_layouts
 sass:
   sass_dir: resources/_assets/stylesheets
   style: compressed
-
-# Custom variables
-current_version: 1.0.0-beta.1
 logo: ukor-logo
