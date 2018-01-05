@@ -10,7 +10,7 @@
   "author": "slheavner",
   "license": "Apache-2.0",
   "bin": {
-    "ukor": "./ukor.js"
+    "ukor": "bin/ukor.js"
   },
   "eslintConfig": {
     "parserOptions": {

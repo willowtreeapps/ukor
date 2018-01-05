@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const program = require('./utils/log-commander')
-const log = require('./utils/log')
-const properties = require('./utils/properties')
-const make = require('./commands/make')
+const program = require('../lib/utils/log-commander')
+const log = require('../lib/utils/log')
+const properties = require('../lib/utils/properties')
+const make = require('../lib/commands/make')
 
 program
   .arguments('[flavors...]')

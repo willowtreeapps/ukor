@@ -1,8 +1,8 @@
-const install = require('./commands/install')
-const program = require('./utils/log-commander')
-const properties = require('./utils/properties')
-const utils = require('./utils/utils')
-const log = require('./utils/log')
+const install = require('../lib/commands/install')
+const program = require('../lib/utils/log-commander')
+const properties = require('../lib/utils/properties')
+const utils = require('../lib/utils/utils')
+const log = require('../lib/utils/log')
 
 program
   .arguments('[flavor] [roku]')
