@@ -2,12 +2,22 @@
   "name": "ukor",
   "version": "0.1.0",
   "description": "Roku build tool with flavors and deployment",
-  "keywords": ["roku", "brightscript", "build", "deployment", "flavor", "tool", "test", "init", "compiler"],
+  "keywords": [
+    "roku",
+    "brightscript",
+    "build",
+    "deployment",
+    "flavor",
+    "tool",
+    "test",
+    "init",
+    "compiler"
+  ],
   "main": "ukor.js",
   "scripts": {
     "docs": "./build/run-docs.sh"
   },
-  "author": "slheavner",
+  "author": "WillowTree Inc",
   "license": "Apache-2.0",
   "bin": {
     "ukor": "bin/ukor.js"
