@@ -1,5 +1,5 @@
-const find = require('./commands/find')
-const program = require('./utils/log-commander')
+const find = require('../lib/commands/find')
+const program = require('../lib/utils/log-commander')
 
 program
   .arguments('[id]')
