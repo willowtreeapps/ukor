@@ -36,18 +36,27 @@ The `ukor.properties` file is the main ukor configuration  file for the project 
 
 ### Exmaple properties (yaml)
 ```yaml
-rokus:
-  customName:
-    serial: ABC123
-    auth:
-      user: username
-      pass: password
-defaults:
-  roku: rokuname
-  flavor: flavor1
-buildDir: build
-sourceDir: src
-mainFlavor: main
+buildDir: 'build'
+sourceDir: 'src'
+mainFlavor: 'flavorName'
+flavors: {
+  flavorName: {
+    src: ['flavor', 'main']
+  },
+  flavorNameRelease: {
+    base: 'biz',
+    src: ['release']
+  }
+}
+rokus: {
+  roku2: {
+    serial: '123123123',
+    auth: {
+      user: 'rokudev',
+      pass: 'YourPassword'
+    }
+  }
+}
 ```
 
 ## Usage
