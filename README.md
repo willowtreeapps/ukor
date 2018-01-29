@@ -44,7 +44,7 @@ flavors: {
     src: ['flavor', 'main']
   },
   flavorNameRelease: {
-    base: 'biz',
+    base: 'flavorName',
     src: ['release']
   }
 }
