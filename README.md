@@ -34,7 +34,7 @@ A Ukor project is organized in a single `src` folder with properties files in or
 
 The `ukor.properties` file is the main ukor configuration  file for the project and should be version controlled. The `ukor.local` file is a local properties file that contains local customizations for ukor overriding the `ukor.properties` file. This file is not expected to be version controlled. 
 
-### Exmaple properties (yaml)
+### Example properties (yaml)
 ```yaml
 buildDir: 'build'
 sourceDir: 'src'
