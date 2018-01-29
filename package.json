@@ -2,22 +2,25 @@
   "name": "ukor",
   "version": "0.1.0",
   "description": "Roku build tool with flavors and deployment",
-  "main": "ukor.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "roku",
+    "brightscript",
     "build",
-    "tool",
-    "rokudev",
     "deployment",
-    "flavor"
+    "flavor",
+    "tool",
+    "test",
+    "init",
+    "compiler"
   ],
-  "author": "slheavner",
+  "main": "ukor.js",
+  "scripts": {
+    "docs": "./build/run-docs.sh"
+  },
+  "author": "WillowTree Inc",
   "license": "Apache-2.0",
   "bin": {
-    "ukor": "./ukor.js"
+    "ukor": "bin/ukor.js"
   },
   "eslintConfig": {
     "parserOptions": {
@@ -29,6 +32,7 @@
     }
   },
   "dependencies": {
+    "@willowtreeapps/wist": "^1.0.0-beta.1",
     "ajv": "^5.1.2",
     "archiver": "^1.3.0",
     "commander": "^2.9.0",

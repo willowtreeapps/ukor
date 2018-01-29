@@ -1,0 +1,13 @@
+title: Ukor
+description: A build management tool for Roku channels. Ukor supports build flavors, automated unit test runs, and linting.
+baseurl: "/ukor"
+url: https://willowtreeapps.github.io
+twitter_username: willowtreeapps
+github_username:  willowtreeapps
+markdown: kramdown
+includes_dir: resources/_includes
+layouts_dir: resources/_layouts
+sass:
+  sass_dir: resources/_assets/stylesheets
+  style: compressed
+logo: ukor-logo

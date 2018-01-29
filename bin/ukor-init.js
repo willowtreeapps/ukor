@@ -1,5 +1,5 @@
 const fs = require('fs')
-const log = require('./utils/log')
+const log = require('../lib/utils/log')
 try {
   fs.mkdir('./src', () => {
     log.info('created ./src directory')
