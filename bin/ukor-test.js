@@ -12,7 +12,7 @@ program
   )
   .option(
     '-p, --port <port>',
-    'Specify a port for ukor to recieve the test results'
+    'Specify a port for ukor to receive the test results'
   )
   .option('-a, --auth <user:pass>', 'Set username and password for roku.')
   .option(

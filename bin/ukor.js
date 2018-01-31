@@ -1,8 +1,4 @@
 #!/usr/bin/env node
-
-const path = require('path')
-const fs = require('fs')
-const log = require('../lib/utils/log')
 const program = require('commander')
 
 program

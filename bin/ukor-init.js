@@ -18,7 +18,7 @@ let defaultProperties =
   'buildDir: build\n' +
   'sourceDir: src\n' +
   'mainFlavor: main\n'
-project = fs.createWriteStream('./ukor.properties')
+const project = fs.createWriteStream('./ukor.properties')
 project.write(defaultProperties, () => {
   project.close()
   log.info('created ukor.properties')
