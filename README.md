@@ -24,6 +24,10 @@ A Ukor project is organized in a single `src` folder with properties files in or
 /Project
 - src/
   - main/
+    - components/
+    - source/
+    - anyThingYouWant/
+    - constants.yaml
   - flavor1/
   - flavor2/
   - test/
@@ -33,6 +37,8 @@ A Ukor project is organized in a single `src` folder with properties files in or
 ```
 
 The `ukor.properties` file is the main ukor configuration  file for the project and should be version controlled. The `ukor.local` file is a local properties file that contains local customizations for ukor overriding the `ukor.properties` file. This file is not expected to be version controlled. 
+
+The `constants.yaml` file is *per-flavor*. In the file, you can define strings (or even any text to insert into a file), and can be identified with `@{some.category.id}` in brightscript OR xml source files.
 
 ### Example properties (yaml)
 ```yaml
@@ -59,6 +65,28 @@ rokus: {
 }
 ```
 
+## Constants
+Each flavor can contain a `constants.yaml`. The strings defined in this file will be added to any `.xml` or `.brs` source files. You can identify the string based on its path in the yaml file. The constants file is idea behind the constants file is similar to Android resource files.
+
+### Example
+constants.yaml
+```
+strings:
+  contactSupport: 'contact support at 555-555-5555'
+  login:
+    signIn: 'Sign in now!'
+```
+source file (brs)
+```
+supportLabel.text = "@{strings.contactSupport}"
+loginLabel.text = "@{strings.login.signIn}"
+```
+final built source file (brs)
+```
+supportLabel.text = "contact support at 555-555-555"
+loginLabel.text = "Sign in now!"
+```
+
 ## Usage
 ```
 Usage: ukor [options] [command]
@@ -80,6 +108,18 @@ Usage: ukor [options] [command]
 
     -v, --verbose  Turn on verbose logging
 ```
+### I want to make a new project
+`ukor init`
+
+### I want to build my project
+`ukor make {flavor}`
+
+### I want to install my project on a device
+`ukor install {flavor} {device}`
+
+or
+
+`ukor install {flavor} {ip address} --auth=username:password` 
 
 # Contributing to Ukor
 
