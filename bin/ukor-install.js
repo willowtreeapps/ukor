@@ -3,6 +3,7 @@ const program = require('../lib/utils/log-commander')
 const properties = require('../lib/utils/properties')
 const utils = require('../lib/utils/utils')
 const log = require('../lib/utils/log')
+const { spawn } = require('child_process')
 
 program
   .arguments('[flavor] [roku]')
@@ -11,6 +12,7 @@ program
     'Specify a roku. Ignored if passed as argument.'
   )
   .option('-a, --auth <user:pass>', 'Set username and password for roku.')
+  .option('-c, --console', 'Launch the Roku Telnet console / debugger after installation')
   .parse(process.argv)
 
 let args = program.args
@@ -48,4 +50,12 @@ if (program['verbose']) {
 if (program['debug']) {
   log.level = 'debug'
 }
-install.install(options)
+install.install(options, function(ip, success) {
+  if (success && program.console) {
+    // launch the debugger
+    console = spawn('telnet', [ip, 8085], {
+      detached: true,
+      stdio: 'inherit'
+    })
+  }
+})

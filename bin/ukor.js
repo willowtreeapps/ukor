@@ -11,7 +11,7 @@ program
     'Bundle your channel into a zip to the build directory'
   )
   .command(
-    'install [flavor] [roku]',
+    'install [flavor] [roku] [-c, --console]',
     'Bundle then deploy your channel to a named roku'
   )
   .command(
