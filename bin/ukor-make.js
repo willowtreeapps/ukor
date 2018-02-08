@@ -9,7 +9,7 @@ program
   .arguments('[flavors...]')
   .option('-o, --out <out>', 'Specify a different build directory')
   .option('-l, --label <name>', 'Append a string to the zip name')
-  .option('-i, --ignore-errors', `Don't fail the build if linting errors are found`)
+  .option('-i, --ignore-errors', 'Don\'t fail the build if linting errors are found')
   .parse(process.argv)
 
 let args = program.args

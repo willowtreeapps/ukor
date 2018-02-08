@@ -20,8 +20,8 @@ try {
   var auth = program.auth || properties.rokus[roku]['auth']
   if (typeof(auth) === 'string') {
     auth = {
-      user: auth.split(":")[0],
-      pass: auth.split(":")[1]
+      user: auth.split(':')[0],
+      pass: auth.split(':')[1]
     }
   }
 } catch (e) {
