@@ -66,22 +66,25 @@ rokus: {
 ```
 
 ## Constants
-Each flavor can contain a `constants.yaml`. The strings defined in this file will be added to any `.xml` or `.brs` source files. You can identify the string based on its path in the yaml file. The constants file is idea behind the constants file is similar to Android resource files.
+Each flavor can contain string resources specified in the `YAML` format by providing `constants.yaml` file. Strings can be referenced by their path specified in any `.xml` or `.brs` source files. For example,
 
-### Example
-constants.yaml
+Given a `constants.yaml` file: 
 ```
 strings:
   contactSupport: 'contact support at 555-555-5555'
-  login:
+  login: 'Hello Roku'
     signIn: 'Sign in now!'
 ```
-source file (brs)
+
+Strings can be references in a `*.brs` file using the following interpolation syntax `@{ <your_resource_here> }`. For example,
+
 ```
 supportLabel.text = "@{strings.contactSupport}"
 loginLabel.text = "@{strings.login.signIn}"
 ```
-final built source file (brs)
+
+The final generated `*.brs` source file will have the strings inlined like so.
+
 ```
 supportLabel.text = "contact support at 555-555-555"
 loginLabel.text = "Sign in now!"
