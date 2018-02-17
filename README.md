@@ -72,7 +72,7 @@ Given a `constants.yaml` file:
 ```
 strings:
   contactSupport: 'contact support at 555-555-5555'
-  login: 'Hello Roku'
+  login:
     signIn: 'Sign in now!'
 ```
 
