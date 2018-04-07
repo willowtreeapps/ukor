@@ -1,3 +1,6 @@
+'use strict'
+
+const path = require('path')
 const fs = require('fs')
 const log = require('../lib/utils/log')
 try {
@@ -15,11 +18,20 @@ try {
 }
 
 let defaultProperties =
+  'name: '+ path.basename(process.cwd()) +'\n' +
+  'version: 0.0.1\n' +
   'buildDir: build\n' +
   'sourceDir: src\n' +
   'mainFlavor: main\n'
-const project = fs.createWriteStream('./ukor.properties')
+
+const localProperties = fs.createWriteStream('./ukor.local')
+localProperties.write('', () => {
+  localProperties.close()
+  log.info('Created ukor.local')
+})
+
+const project = fs.createWriteStream('./ukor.properties.yaml')
 project.write(defaultProperties, () => {
   project.close()
-  log.info('created ukor.properties')
+  log.info('created ukor.properties.yaml')
 })
