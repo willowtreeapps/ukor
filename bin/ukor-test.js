@@ -37,8 +37,8 @@ if (options.flavor == null || options.flavor == '') {
 if (program['port']) {
   options.port = program.port
 }
-if (program['roku']) {
-  options.roku = program.roku
+if (args.length > 1) {
+  options.roku = args[1]
 }
 if (
   options.roku == null ||
