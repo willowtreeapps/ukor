@@ -124,6 +124,32 @@ or
 
 `ukor install {flavor} {ip address} --auth=username:password` 
 
+## Testing
+
+- copy the modified `UnitTestFramework.brs` in [lib/brs/](../master/lib/brs/UnitTestFramework.brs) to your `src/test/source/` folder, so it loads at startup for when testing
+  - original `UnitTestFramework.brs` can be found [here](https://github.com/rokudev/unit-testing-framework) 
+- add the following snippet in your startup function, after `screen.show()` but before the event loop
+```
+if params.RunTests = "true"
+  runner = TestRunner()
+  if params.host <> invalid
+    runner.logger.SetServer(params.host, params.port, params.protocol)
+  else
+    runner.logger.SetServerURL(param.url)
+  end if
+  # other setup if needed
+  runner.run()
+end if
+```
+- run `ukor test [flavor] [roku]` 
+
+### What's happening?
+Basically, we modified the rokudev `UnitTestFramework.brs` file to make a json of test results, and then `POST` that to the specified server. `ukor test <flavor>` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`. 
+
+notes: 
+- Ukor does not currently have a command to add `UnitTestFramework.brs` to the project automagically. You'll have to copy it from the repo for now.
+- `UnitTestFramework.brs` is not up to date with ther current rokudev version
+
 # Contributing to Ukor
 
 Contributions and suggestions are more than welcome. Please see our [Code of Conduct](/CODE_OF_CONDUCT.md) 
