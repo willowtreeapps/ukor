@@ -18,6 +18,12 @@ Features:
 
 ## Project setup
 
+You can install Ukor via NPM.
+
+```sh
+npm install -g @willowtreeapps/ukor
+```
+
 A Ukor project is organized in a single `src` folder with properties files in order to configure Ukor. The `src` folder contains a single `main` folder which contain the default built sources, optional customized flavor sources as well as test sources.
 
 ```
@@ -69,7 +75,7 @@ rokus: {
 Each flavor can contain string resources specified in the `YAML` format by providing `constants.yaml` file. Strings can be referenced by their path specified in any `.xml` or `.brs` source files. For example,
 
 Given a `constants.yaml` file: 
-```
+```yml
 strings:
   contactSupport: 'contact support at 555-555-5555'
   login:
@@ -78,20 +84,20 @@ strings:
 
 Strings can be references in a `*.brs` file using the following interpolation syntax `@{ <your_resource_here> }`. For example,
 
-```
+```yml
 supportLabel.text = "@{strings.contactSupport}"
 loginLabel.text = "@{strings.login.signIn}"
 ```
 
 The final generated `*.brs` source file will have the strings inlined like so.
 
-```
+```yml
 supportLabel.text = "contact support at 555-555-555"
 loginLabel.text = "Sign in now!"
 ```
 
 ## Usage
-```
+```sh
 Usage: ukor [options] [command]
 
 
