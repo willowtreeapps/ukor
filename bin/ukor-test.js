@@ -7,10 +7,6 @@ const properties = require('../lib/utils/properties')
 program
   .arguments('[flavor] [roku]')
   .option(
-    '-e, --external <url>',
-    'Send test result json to something other than ukor'
-  )
-  .option(
     '-p, --port <port>',
     'Specify a port for ukor to receive the test results'
   )
@@ -27,7 +23,6 @@ let options = {
   roku: properties.defaults['roku'],
   auth: null,
   port: '8080',
-  url: null,
   name: '_test'
 }
 if (program['flavor']) {
@@ -42,8 +37,8 @@ if (options.flavor == null || options.flavor == '') {
 if (program['port']) {
   options.port = program.port
 }
-if (program['roku']) {
-  options.roku = program.roku
+if (args.length > 1) {
+  options.roku = args[1]
 }
 if (
   options.roku == null ||

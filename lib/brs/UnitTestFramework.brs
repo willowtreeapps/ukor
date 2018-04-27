@@ -2,15 +2,15 @@
 '* Roku Unit Testing Framework (BETA)
 '* A beta tool for automating test suites for Roku channels.
 '*
-'* Build Version: 1.2.1
-'* Build Date: 04/03/2017
+'* Build Version: 1.3.0
+'* Build Date: 03/06/2018
 '*
 '* Public Documentation is avaliable on GitHub:
 '* 		https://github.com/rokudev/unit-testing-framework
 '*
 '*****************************************************************
 '*****************************************************************
-'* Copyright Roku 2011-2017
+'* Copyright Roku 2011-2018
 '* All Rights Reserved
 '*****************************************************************
 
@@ -53,12 +53,15 @@ function BaseTestSuite()
 
     this = {}
     this.Name                           = "BaseTestSuite"
+    this.SKIP_TEST_MESSAGE_PREFIX       = "SKIP_TEST_MESSAGE_PREFIX__"
     'Test Cases methods
     this.testCases = []
     this.addTest                        = BTS__AddTest
     this.createTest                     = BTS__CreateTest
+    this.StorePerformanceData           = BTS__StorePerformanceData
 
-    'Assertion methods which determine test failure
+    'Assertion methods which determine test failure or skipping
+    this.skip                           = BTS__Skip
     this.fail                           = BTS__Fail
     this.assertFalse                    = BTS__AssertFalse
     this.assertTrue                     = BTS__AssertTrue
@@ -111,12 +114,44 @@ Function BTS__CreateTest(name as String, func as Object, setup = invalid as Obje
         Func: func
         SetUp: setup
         TearDown: teardown
+        perfData: {}
     }
 End Function
 
 '----------------------------------------------------------------
-' Assertion methods which determine test failure
+' Store performance data to current test instance.
+'
+' @param name (string) A property name.
+' @param value (Object) A value of data.
 '----------------------------------------------------------------
+Sub BTS__StorePerformanceData(name as String, value as Object)
+    timestamp = StrI(CreateObject("roDateTime").AsSeconds())
+    m.testInstance.perfData.Append({
+        name: {
+            "value" : value
+            "timestamp": timestamp
+        }
+    })
+    ' print performance data to console
+    ? "PERF_DATA: " + m.testInstance.Name + ": " + timestamp + ": " + name + "|" + TF_Utils__AsString(value)
+End Sub
+
+'----------------------------------------------------------------
+' Assertion methods which determine test failure or skipping
+'----------------------------------------------------------------
+
+'----------------------------------------------------------------
+' Should be used to skip test cases. To skip test you must return the result of this method invocation.
+'
+' @param message (string) Optional skip message.
+' Default value: "".
+'
+' @return A skip message, with a specific prefix added, in order to runner know that this test should be skipped.
+'----------------------------------------------------------------
+function BTS__Skip(message = "" as String) as String
+    ' add prefix so we know that this test is skipped, but not failed
+	return m.SKIP_TEST_MESSAGE_PREFIX + message
+end function
 
 '----------------------------------------------------------------
 ' Fail immediately, with the given message
@@ -591,8 +626,12 @@ End Function
 '
 ' @return True if values are equal or False in other case.
 '----------------------------------------------------------------
-Function BTS__EqValues(Value1 as dynamic, Value2 as dynamic, comparator = m.baseComparator as Function) as Boolean
-    return comparator(value1, value2)
+Function BTS__EqValues(Value1 as dynamic, Value2 as dynamic, comparator = invalid as Object) as Boolean
+	if comparator = invalid
+		return m.baseComparator(value1, value2)
+	else
+		return comparator(value1, value2)
+	end if
 End Function
 
 '----------------------------------------------------------------
@@ -669,8 +708,9 @@ Function BTS__EqArray(Value1 as Object, Value2 as Object) as Boolean
         end for
         return True
     end if
-End Function'*****************************************************************
-'* Copyright Roku 2011-2017
+End Function
+'*****************************************************************
+'* Copyright Roku 2011-2018
 '* All Rights Reserved
 '*****************************************************************
 
@@ -872,8 +912,9 @@ Function IG_GetString(seed as integer) as string
     end if
 
     return item
-End Function'*****************************************************************
-'* Copyright Roku 2011-2017
+End Function
+'*****************************************************************
+'* Copyright Roku 2011-2018
 '* All Rights Reserved
 '*****************************************************************
 
@@ -988,10 +1029,17 @@ end sub
 '----------------------------------------------------------------
 sub Logger__SetServerURL(url = invalid as String)
     if url <> invalid
-      m.serverURL = url
+        m.serverURL = url
     end if
 end sub
 
+'----------------------------------------------------------------
+' Set storage server URL parameter.
+'
+' @param url (string) host for url.
+' @param port (string) port for url.
+' Default level: invalid
+'----------------------------------------------------------------
 sub Logger__SetServer(host = invalid as String, port = invalid as String)
     if host <> invalid
         if port <> invalid
@@ -1003,9 +1051,9 @@ sub Logger__SetServer(host = invalid as String, port = invalid as String)
 end sub
 
 '----------------------------------------------------------------
-' Set storage server URL parameter.
+' Send test results as a POST json payload.
 '
-' @param url (string) A storage server URL.
+' @param statObj (object) stats of the test run.
 ' Default level: invalid
 '----------------------------------------------------------------
 sub Logger__SendToServer(statObj as Object)
@@ -1014,7 +1062,7 @@ sub Logger__SendToServer(statObj as Object)
       request = CreateObject("roUrlTransfer")
       request.SetUrl(m.serverURL)
       statString = FormatJson(statObj)
-      ? "Response: "; request.postFromString(statString)
+      ? "Response: "; request.postFromString(statString)    
     end if
 end sub
 
@@ -1045,7 +1093,7 @@ sub Logger__PrintStatistic(statObj as Object)
     end if
 
     ? "***"
-    ? "***   Total  = "; TF_Utils__AsString(statObj.Total); " ; Passed  = "; statObj.Correct; " ; Failed   = "; statObj.Fail; " ; Crashes  = "; statObj.Crash;
+    ? "***   Total  = "; TF_Utils__AsString(statObj.Total); " ; Passed  = "; statObj.Correct; " ; Failed   = "; statObj.Fail; " ; Skipped   = "; statObj.skipped; " ; Crashes  = "; statObj.Crash;
     ? " Time spent: "; statObj.Time; "ms"
     ? "***"
 
@@ -1064,6 +1112,7 @@ function Logger__CreateTotalStatistic() as Object
         Total       : 0
         Correct     : 0
         Fail        : 0
+        Skipped     : 0
         Crash       : 0
     }
 
@@ -1089,6 +1138,7 @@ function Logger__CreateSuiteStatistic(name as String) as Object
         Total   : 0
         Correct : 0
         Fail    : 0
+        Skipped : 0
         Crash   : 0
     }
 
@@ -1131,6 +1181,7 @@ function Logger__CreateTestStatistic(name as String, result = "Success" as Strin
         Name    : name
         Result  : result
         Time    : time
+        PerfData: {}
         Error   : {
             Code    : errorCode
             Message : errorMessage
@@ -1166,6 +1217,8 @@ sub Logger__AppendTestStatistic(statSuiteObj as Object, statTestObj as Object)
             statSuiteObj.Correct = statSuiteObj.Correct + 1
         else if lCase(statTestObj.result) = "fail"
             statSuiteObj.Fail = statSuiteObj.Fail + 1
+        else if lCase(statTestObj.result) = "skipped"
+            statSuiteObj.skipped++
         else
             statSuiteObj.crash = statSuiteObj.crash + 1
         end if
@@ -1203,6 +1256,10 @@ sub Logger__AppendSuiteStatistic(statTotalObj as Object, statSuiteObj as Object)
             statTotalObj.Fail = statTotalObj.Fail + statSuiteObj.Fail
         end if
 
+        if TF_Utils__IsInteger(statSuiteObj.skipped)
+            statTotalObj.skipped += statSuiteObj.skipped
+        end if
+
         if TF_Utils__IsInteger(statSuiteObj.Crash)
             statTotalObj.Crash = statTotalObj.Crash + statSuiteObj.Crash
         end if
@@ -1230,7 +1287,7 @@ sub Logger__PrintSuiteStatistic(statSuiteObj as Object)
     end if
 
     ? "==="
-    ? "===   Total  = "; TF_Utils__AsString(statSuiteObj.Total); " ; Passed  = "; statSuiteObj.Correct; " ; Failed   = "; statSuiteObj.Fail; " ; Crashes  = "; statSuiteObj.Crash;
+    ? "===   Total  = "; TF_Utils__AsString(statSuiteObj.Total); " ; Passed  = "; statSuiteObj.Correct; " ; Failed   = "; statSuiteObj.Fail; " ; Skipped   = "; statSuiteObj.skipped; " ; Crashes  = "; statSuiteObj.Crash;
     ? " Time spent: "; statSuiteObj.Time; "ms"
     ? "==="
 
@@ -1250,7 +1307,11 @@ sub Logger__PrintTestStatistic(statTestObj as Object)
     ? "---   Result:        "; statTestObj.Result
     ? "---   Time:          "; statTestObj.Time
 
-    if LCase(statTestObj.Result) <> "success"
+    if lCase(statTestObj.result) = "skipped"
+        if len(statTestObj.message) > 0
+            ? "---   Message: "; statTestObj.message
+        end if
+    else if LCase(statTestObj.Result) <> "success"
         ? "---   Error Code:    "; statTestObj.Error.Code
         ? "---   Error Message: "; statTestObj.Error.Message
     end if
@@ -1360,7 +1421,7 @@ sub Logger__PrintTestTearDown(tName as String)
     end if
 end sub
 '*****************************************************************
-'* Copyright Roku 2011-2017
+'* Copyright Roku 2011-2018
 '* All Rights Reserved
 '*****************************************************************
 
@@ -1392,6 +1453,7 @@ function TestRunner() as Object
     this.logger = Logger()
 
     ' Internal properties
+    this.SKIP_TEST_MESSAGE_PREFIX = "SKIP_TEST_MESSAGE_PREFIX__"
     this.nodesTestDirectory = "pkg:/components/tests"
     if this.isNodeMode
         this.testsDirectory = this.nodesTestDirectory
@@ -1435,7 +1497,6 @@ function TestRunner__Run(statObj = m.logger.CreateTotalStatistic() as Object, te
     alltestCount = 0
     totalStatObj = statObj
     testSuitesList = m.GetTestSuitesList(testSuiteNamesList)
-    testSuitesStatsList = []
     for each testSuite in testSuitesList
         testCases = testSuite.testCases
         testCount = testCases.Count()
@@ -1463,9 +1524,14 @@ function TestRunner__Run(statObj = m.logger.CreateTotalStatistic() as Object, te
                 runResult = testSuite.testCase()
 
                 if runResult <> ""
-                    testStatObj.Result          = "Fail"
-                    testStatObj.Error.Code      = 1
-                    testStatObj.Error.Message   = runResult
+                    if instr(0, runResult, m.SKIP_TEST_MESSAGE_PREFIX) = 1
+                        testStatObj.result = "Skipped"
+                        testStatObj.message = runResult.mid(len(m.SKIP_TEST_MESSAGE_PREFIX)) ' remove prefix from the message
+                    else
+                        testStatObj.Result          = "Fail"
+                        testStatObj.Error.Code      = 1
+                        testStatObj.Error.Message   = runResult
+                    end if
                 else
                     testStatObj.Result          = "Success"
                 end if
@@ -1495,6 +1561,7 @@ function TestRunner__Run(statObj = m.logger.CreateTotalStatistic() as Object, te
             exit for
         end if
     end for
+
     if m.isNodeMode
         return totalStatObj
     else
@@ -1527,7 +1594,7 @@ end sub
 '----------------------------------------------------------------
 sub TestRunner__SetTestFilePrefix(testFilePrefix as String)
     if testFilePrefix <> invalid
-        m.testFilePrefix = setTestFilePrefix
+        m.testFilePrefix = testFilePrefix
     end if
 end sub
 
@@ -1724,7 +1791,7 @@ function TestFramework__RunNodeTests(params as Object) as Object
     return Runner.RUN(statObj, testSuiteNamesList)
 end function
 '*****************************************************************
-'* Copyright Roku 2011-2017
+'* Copyright Roku 2011-2018
 '* All Rights Reserved
 '*****************************************************************
 ' Common framework utility functions
