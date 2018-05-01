@@ -97,7 +97,7 @@ loginLabel.text = "Sign in now!"
 ```
 
 ## Usage
-```sh
+```
 Usage: ukor [options] [command]
 
 
@@ -117,25 +117,42 @@ Usage: ukor [options] [command]
 
     -v, --verbose  Turn on verbose logging
 ```
-### I want to make a new project
-`ukor init`
 
-### I want to build my project
-`ukor make {flavor}`
+## Quick reference 
 
-### I want to install my project on a device
-`ukor install {flavor} {device}`
+* I want to make a new project
+```
+ukor init
+```
 
+* I want to build my project
+```
+ukor make [flavor]
+```
+
+* I want to install my project on a device
+```
+ukor install [flavor] [device]
+```
 or
 
-`ukor install {flavor} {ip address} --auth=username:password` 
+```
+ukor install [flavor] [ip address] --auth=[username]:[password]
+``` 
 
 ## Testing
 
-- copy the modified `UnitTestFramework.brs` in [lib/brs/](../master/lib/brs/UnitTestFramework.brs) to your `src/test/source/` folder, so it loads at startup for when testing
-  - original `UnitTestFramework.brs` can be found [here](https://github.com/rokudev/unit-testing-framework) 
-- add the following snippet in your startup function, after `screen.show()` but before the event loop
-```
+Ukor uses `UnitTestFramework.brs` as part of its unit test runner and test reporting feature. This is especially useful if you plan on having Continuous Integration as part of your workflow.
+
+### Setup
+
+First, copy the modified `UnitTestFramework.brs` in [lib/brs/](../master/lib/brs/UnitTestFramework.brs) to your `src/test/source/` folder, so it loads at startup for when testing.
+
+> Note that the original `UnitTestFramework.brs` can be found [here](https://github.com/rokudev/unit-testing-framework) 
+
+Next, dd the following snippet in your startup function, after `screen.show()` but before the event loop
+
+```brightscript
 if params.RunTests = "true"
   runner = TestRunner()
   if params.host <> invalid
@@ -147,10 +164,15 @@ if params.RunTests = "true"
   runner.run()
 end if
 ```
-- run `ukor test [flavor] [roku]` 
+
+You should now be able to execute your test suite using the `test` command.
+
+```
+ukor test [flavor] [roku]
+``` 
 
 ### What's happening?
-Basically, we modified the rokudev `UnitTestFramework.brs` file to make a json of test results, and then `POST` that to the specified server. `ukor test <flavor>` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`. 
+Basically, we modified the rokudev `UnitTestFramework.brs` file to make a `JSON` of test results, and then `POST` that to the specified server. `ukor test [flavor]` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`. 
 
 notes: 
 - Ukor now copies `UnitTestFramework.brs` with `ukor init`!
