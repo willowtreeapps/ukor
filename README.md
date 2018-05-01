@@ -153,8 +153,8 @@ end if
 Basically, we modified the rokudev `UnitTestFramework.brs` file to make a json of test results, and then `POST` that to the specified server. `ukor test <flavor>` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`. 
 
 notes: 
-- Ukor does not currently have a command to add `UnitTestFramework.brs` to the project automagically. You'll have to copy it from the repo for now.
-- `UnitTestFramework.brs` is not up to date with ther current rokudev version
+- Ukor now copies `UnitTestFramework.brs` with `ukor init`!
+- `UnitTestFramework.brs` is now up to date with the rokudev repo!
 
 # Contributing to Ukor
 
