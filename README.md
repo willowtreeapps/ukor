@@ -160,7 +160,7 @@ if params.RunTests = "true"
   else
     runner.logger.SetServerURL(param.url)
   end if
-  # other setup if needed
+  ' other setup if needed
   runner.run()
 end if
 ```
