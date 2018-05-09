@@ -5,7 +5,7 @@ sub main(params as object)
   if params.RunTests = "true"
     runner = TestRunner()
     if params.host <> invalid
-      runner.logger.SetServer(params.host, params.port, params.protocol)
+      runner.logger.SetServer(params.host, params.port)
     else
       runner.logger.SetServerURL(param.url)
     end if

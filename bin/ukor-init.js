@@ -39,6 +39,3 @@ if (!fs.existsSync(propsFile)) {
 } else {
   log.info(`${propsFile} already exists`)
 }
-
-log.info('Ukor works greate with Wist, run "wist -i" to generate a default .wistrc.json')
-
