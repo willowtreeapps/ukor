@@ -18,7 +18,7 @@ Features:
 
 ## Project setup
 
-You can install Ukor via NPM.
+You can install Ukor via NPM. **Note:** Node v7.6 or higher is required to run Ukor.
 
 ```sh
 npm install -g @willowtreeapps/ukor
