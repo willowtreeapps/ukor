@@ -16,9 +16,17 @@ Features:
 - Set default install targets
 - Search for Rokus on your local network
 
+## Questions?
+
+Join us in the #tooling channel on the [Roku Developers Slack](https://join.slack.com/t/rokudevelopers/shared_invite/enQtMzU5Njc5ODM5MzAyLWE2MTIxMWQ5Nzg0Y2E3ODgzYTk4NmQxMDg2YjRjYjdiMzM5ZDU4ZTc0YmM1ZmU0Mzc5MzI3ODU3MmUxOTdlNTE).
+
+## Requirements
+
+* Node **v7.6** or higher.
+
 ## Project setup
 
-You can install Ukor via NPM. **Note:** Node v7.6 or higher is required to run Ukor.
+You can install Ukor via NPM. 
 
 ```sh
 npm install -g @willowtreeapps/ukor
@@ -75,6 +83,7 @@ rokus: {
 Each flavor can contain string resources specified in the `YAML` format by providing `constants.yaml` file. Strings can be referenced by their path specified in any `.xml` or `.brs` source files. For example,
 
 Given a `constants.yaml` file: 
+
 ```yml
 strings:
   contactSupport: 'contact support at 555-555-5555'
@@ -97,6 +106,7 @@ loginLabel.text = "Sign in now!"
 ```
 
 ## Usage
+
 ```
 Usage: ukor [options] [command]
 
@@ -172,6 +182,7 @@ ukor test [flavor] [roku]
 ``` 
 
 ### What's happening?
+
 Basically, we modified the rokudev `UnitTestFramework.brs` file to make a `JSON` of test results, and then `POST` that to the specified server. `ukor test [flavor]` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`. 
 
 notes: 
