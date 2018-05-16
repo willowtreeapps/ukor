@@ -38,7 +38,7 @@ let options = {
 }
 for (let key in options) {
   if (!options[key] && key != 'name') {
-    log.error('%s options is undefined')
+    log.error('%s options is undefined', key)
     log.pretty('error', 'options:', options)
     process.exit(-1)
   }
