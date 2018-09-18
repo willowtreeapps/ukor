@@ -41,7 +41,7 @@
     }
   },
   "dependencies": {
-    "@willowtreeapps/wist": "^1.0.0-beta.1",
+    "@willowtreeapps/wist": "^2.0.0",
     "ajv": "^5.1.2",
     "archiver": "^1.3.0",
     "commander": "^2.9.0",
