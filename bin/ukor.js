@@ -15,6 +15,10 @@ program
     'Package a channel flavor with a roku device'
   )
   .command(
+    'lint <flavor>',
+    'Lint a channel flavor'
+  )
+  .command(
     'console [roku]',
     'Launch the Telnet console for the named roku'
   )
