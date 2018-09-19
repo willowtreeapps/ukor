@@ -166,9 +166,9 @@ Next, dd the following snippet in your startup function, after `screen.show()` b
 if params.RunTests = "true"
   runner = TestRunner()
   if params.host <> invalid
-    runner.logger.SetServer(params.host, params.port, params.protocol)
+    runner.logger.SetServer(params.host, params.port)
   else
-    runner.logger.SetServerURL(param.url)
+    runner.logger.SetServerURL(params.url)
   end if
   ' other setup if needed
   runner.run()
