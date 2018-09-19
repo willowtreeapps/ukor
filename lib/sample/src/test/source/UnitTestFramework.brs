@@ -967,6 +967,7 @@ function Logger() as Object
     this.SetVerbosity           = Logger__SetVerbosity
     this.SetEcho                = Logger__SetEcho
     this.SetServerURL           = Logger__SetServerURL
+    this.SetServer              = Logger__SetServer
     this.PrintStatistic         = Logger__PrintStatistic
     this.SendToServer           = Logger__SendToServer
 
