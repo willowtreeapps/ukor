@@ -11,6 +11,7 @@ program
     '-r, --roku <name|id|ip>',
     'Specify a roku. Ignored if passed as argument.'
   )
+  .option('-a, --auth <user:pass>', 'Set username and password for roku.')
   .parse(process.argv)
 
 let args = program.args
