@@ -58,6 +58,7 @@ The `constants.yaml` file is *per-flavor*. In the file, you can define strings (
 ```yaml
 buildDir: 'build'
 sourceDir: 'src'
+preBuild: 'scripts/main.js'
 mainFlavor: 'flavorName'
 flavors: {
   flavorName: {
@@ -113,13 +114,17 @@ Usage: ukor [options] [command]
 
   Commands:
 
-    make [flavors...]        Bundle your channel into a zip to the build directory
-    install [flavor] [roku]  Bundle then deploy your channel to a named roku
-    find                     Search for rokus on the network
-    validate                 Validate ukor.properties and ukor.local
-    init                     Initialize a ukor project
-    test                     Install, then run test on a Roku, and receive results on http
-    help [cmd]               display help for [cmd]
+    make [flavors...]             Bundle your channel into a zip to the build directory
+    install [flavor] [roku] [-c]  Bundle then deploy your channel to a named roku
+    package <flavor> <roku>       Package a channel flavor with a roku device
+    lint <flavor>                 Lint a channel flavor
+    console [roku]                Launch the Telnet console for the named roku
+    debugger [roku]               Launch the Telnet debugger for the named roku
+    find                          Search for rokus on the network
+    init [flavors...]             Initialize a ukor project
+    test                          Run the tests
+    validate                      Validate ukor.properties and ukor.local
+    help [cmd]                    display help for [cmd]
 
   Options:
 
@@ -149,6 +154,16 @@ or
 ```
 ukor install [flavor] [ip address] --auth=[username]:[password]
 ``` 
+
+* I want to package my project using a device
+```
+ukor package [flavor] [device]
+```
+or
+
+```
+ukor package [flavor] [ip address] --auth=[username]:[password]
+```
 
 ## Testing
 
