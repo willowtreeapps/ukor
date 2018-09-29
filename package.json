@@ -44,6 +44,7 @@
     "@willowtreeapps/wist": "^2.0.1",
     "ajv": "^6.5.4",
     "ajv-keywords": "^3.2.0",
+    "xml2js": "^0.4.19",
     "archiver": "^3.0.0",
     "commander": "^2.18.0",
     "fs-extra": "^7.0.0",
