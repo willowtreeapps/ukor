@@ -24,8 +24,7 @@ try {
   if (typeof(auth) === 'string') {
     auth = {
       user: auth.split(':')[0],
-      pass: auth.split(':')[1],
-      sendImmediately: false
+      pass: auth.split(':')[1]
     }
   }
 } catch (e) {
@@ -55,13 +54,6 @@ if (program['debug']) {
   log.level = 'debug'
 }
 
-let usn = ''
-if (utils.parseRoku(options.roku) == 'name') {
-  usn = properties.rokus[options.roku].serial
-} else {
-  usn = options.roku
-}
-
-find.findDeviceBySerialNo(usn, 5, ip => {
+find.findDeviceBySerialNo(utils.getUsn(options), 5, ip => {
   ip ? rekey.rekey(options, ip) : null
 })
