@@ -20,48 +20,48 @@ let args = program.args
 let roku = args[0] || program.roku || properties.defaults.roku
 
 try {
-    var auth = program.auth || properties.rokus[roku]['auth']
-    if (typeof(auth) === 'string') {
-      auth = {
-        user: auth.split(':')[0],
-        pass: auth.split(':')[1]
-      }
+  var auth = program.auth || properties.rokus[roku]['auth']
+  if (typeof(auth) === 'string') {
+    auth = {
+      user: auth.split(':')[0],
+      pass: auth.split(':')[1],
+      sendImmediately: false
     }
+  }
 } catch (e) {
-    log.error('no auth defined for roku: ' + roku)
-    process.exit(-1)
+  log.error('no auth defined for roku: ' + roku)
+  process.exit(-1)
 }
 
 let options = {
-    flavor: 'main',
-    roku,
-    auth,
-    name: ''
+  flavor: 'main',
+  roku,
+  auth,
+  name: ''
 }
 for (let key in options) {
-    if (!options[key] && key != 'name') {
-      log.error('%s options is undefined')
-      log.pretty('error', 'options:', options)
-      process.exit(-1)
-    }
+  if (!options[key] && key != 'name') {
+    log.error('%s options is undefined')
+    log.pretty('error', 'options:', options)
+    process.exit(-1)
+  }
 }
 
 if (program['verbose']) {
-    log.level = 'verbose'
+  log.level = 'verbose'
 }
 
 if (program['debug']) {
-    log.level = 'debug'
+  log.level = 'debug'
 }
 
-let onmake = () => {
-  let usn = ''
-  if (utils.parseRoku(options.roku) == 'name') {
-    usn = properties.rokus[options.roku].serial
-  } else {
-    usn = options.roku
-  }
-  find.findDeviceBySerialNo(usn, 5, ip => {
-    ip ? rekey.rekey(options, ip) : null
-  })
+let usn = ''
+if (utils.parseRoku(options.roku) == 'name') {
+  usn = properties.rokus[options.roku].serial
+} else {
+  usn = options.roku
 }
+
+find.findDeviceBySerialNo(usn, 5, ip => {
+  ip ? rekey.rekey(options, ip) : null
+})
