@@ -15,6 +15,10 @@ program
     'Package a channel flavor with a roku device'
   )
   .command(
+    'rekey <roku>',
+    'Rekey your device (an packageReference is required)'
+  )
+  .command(
     'lint <flavor>',
     'Lint a channel flavor'
   )
