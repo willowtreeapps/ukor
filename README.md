@@ -176,8 +176,9 @@ or
 ukor package [ip address] --auth=[username]:[password]
 ```
 
-NOTE: you will need to define a `packageReference` in `ukor.properties.yaml`.
-`packageReference` represent an signed release package.
+NOTE: you will need to define a `packageReference` and `packageKey` in `ukor.properties.yaml`.
+`packageReference` represent device id and `packageKey` does for password
+
 
 ## Testing
 
