@@ -1,6 +1,6 @@
 {
   "name": "@willowtreeapps/ukor",
-  "version": "1.1.3",
+  "version": "1.1.5",
   "description": "Roku build tool with flavors and deployment",
   "keywords": [
     "roku",
@@ -44,7 +44,6 @@
     "@willowtreeapps/wist": "^2.0.1",
     "ajv": "^6.5.4",
     "ajv-keywords": "^3.2.0",
-    "xml2js": "^0.4.19",
     "archiver": "^3.0.0",
     "commander": "^2.18.0",
     "fs-extra": "^7.0.0",
@@ -57,7 +56,8 @@
     "request": "^2.88.0",
     "rimraf": "^2.6.2",
     "winston": "^3.1.0",
-    "xml-writer": "^1.7.0"
+    "xml-writer": "^1.7.0",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
