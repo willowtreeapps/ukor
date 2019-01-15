@@ -24,7 +24,7 @@ if (!fs.existsSync(propsFile)) {
     buildDir: 'build',
     sourceDir: 'src',
     defaults: {
-      falvor: 'main'
+      flavor: 'main'
     }, 
     flavors: {
       main: {
