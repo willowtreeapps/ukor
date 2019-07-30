@@ -1,0 +1,12 @@
+name: UkorBaseProject
+version: 1.0.1
+buildDir: build
+sourceDir: src
+preBuild: scripts/preBuild.js
+runUnitTestsScript: scripts/runTests.js
+defaults:
+  flavor: main
+flavors:
+  main:
+    src:
+      - main
