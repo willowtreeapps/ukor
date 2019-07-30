@@ -59,6 +59,7 @@ The `constants.yaml` file is *per-flavor*. In the file, you can define strings (
 buildDir: 'build'
 sourceDir: 'src'
 preBuild: 'scripts/main.js'
+runUnitTestsScript: 'scripts/runTests.js'
 mainFlavor: 'flavorName'
 flavors: {
   flavorName: {
@@ -182,28 +183,39 @@ NOTE: you will need to define a `packageReference` and `packageKey` in `ukor.pro
 
 ## Testing
 
-Ukor uses `UnitTestFramework.brs` as part of its unit test runner and test reporting feature. This is especially useful if you plan on having Continuous Integration as part of your workflow.
+With ukor you have possibility to use whatever unit test framework you want !
 
 ### Setup
 
-First, copy the modified `UnitTestFramework.brs` in [lib/brs/](../master/lib/brs/UnitTestFramework.brs) to your `src/test/source/` folder, so it loads at startup for when testing.
+#### 1. Define you custom tests running js script:
 
-> Note that the original `UnitTestFramework.brs` can be found [here](https://github.com/rokudev/unit-testing-framework)
-
-Next, dd the following snippet in your startup function, after `screen.show()` but before the event loop
-
-```brightscript
-if params.RunTests = "true"
-  runner = TestRunner()
-  if params.host <> invalid
-    runner.logger.SetServer(params.host, params.port)
-  else
-    runner.logger.SetServerURL(params.url)
-  end if
-  ' other setup if needed
-  runner.run()
-end if
+Example: `/scripts/runTests.js`
 ```
+const child_process = require('child_process')
+
+const args = process.argv.slice(2)
+const ip = args[0] // the roku device ip given as an argument by ukor
+
+// main function call
+main()
+
+function main() {
+    child_process.execSync(`npx rooibosC -c ./.rooibosrc.json`)
+    child_process.execSync(`curl -d '' "http://${ip}:8060/launch/dev?RunTests=true"`)
+}
+```
+
+#### 2. Add the path of your script to ukor.properties.yaml
+
+```
+...
+buildDir: build
+sourceDir: src
+preBuild: scripts/preBuild.js
+
+runUnitTestsScript: scripts/runTests.js
+```
+
 
 You should now be able to execute your test suite using the `test` command.
 
@@ -213,11 +225,14 @@ ukor test [flavor] [roku]
 
 ### What's happening?
 
-Basically, we modified the rokudev `UnitTestFramework.brs` file to make a `JSON` of test results, and then `POST` that to the specified server. `ukor test [flavor]` builds and deploys the specified flavor with the `test` src folder, and then restarts the channel with parameters to run tests and point the results to the client machine. `ukor` will log the results, and also output results in `xml` and `junit` format to `.out/tests/ukorTests.[xml|junit]`.
+After running the test command, ukor will deploy the channel on given device.
+Once the channel is deployed, ukor starts to run the `runTests.js` script with the device `ip` as argument.
 
-notes:
-- Ukor now copies `UnitTestFramework.brs` with `ukor init`!
-- `UnitTestFramework.brs` is now up to date with the rokudev repo!
+You can get `ip` inside of `runTests.js` by:
+```
+const args = process.argv.slice(2)
+const ip = args[0] // the roku device ip given as an argument by ukor
+```
 
 # Contributing to Ukor
 
