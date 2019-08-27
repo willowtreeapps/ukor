@@ -1,19 +1,30 @@
-sub main(params as object)
-  ' set up your screen
+sub main(args as object)
+    appInfo = CreateObject("roAppInfo")
+    m.port = CreateObject("roMessagePort")
 
-  'check for test parameter
-  if params.RunTests = "true"
-    runner = TestRunner()
-    if params.host <> invalid
-      runner.logger.SetServer(params.host, params.port, params.protocol)
+    screen = CreateObject("roSGScreen")
+    screen.setMessagePort(m.port)
+
+    scene = screen.CreateScene("AppScene")
+    screen.show()
+
+    if appInfo.isDev() and args.runTests = "true" then
+        runUnitTests()
     else
-      runner.logger.SetServerURL(param.url)
+        runMainLoop()
     end if
-    ' other setup if needed
+end sub
 
-    runner.run()
-  end if
+sub runUnitTests()
+    ' put your code here
+end sub
 
-  ' start event loop
+sub runMainLoop()
+    while true
+        msg = wait(0, m.port)
 
+        if type(msg) = "roSGScreenEvent"
+            if msg.isScreenClosed() then return
+        end if
+    end while
 end sub
