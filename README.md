@@ -185,6 +185,8 @@ NOTE: you will need to define a `packageReference` and `packageKey` in `ukor.pro
 
 With ukor you have possibility to use whatever unit test framework you want !
 
+Checkout ours [unit testing scripts](http://github.com/willowtreeapps/ukor/tree/master/unit-testing-scripts)
+
 ### Setup
 
 #### 1. Define you custom tests running js script:
