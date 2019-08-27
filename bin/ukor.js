@@ -15,7 +15,7 @@ program
     'Package a channel flavor with a roku device'
   )
   .command(
-    'rekey <roku>',
+    'rekey <roku> [-p --packageConfig]',
     'Rekey your device (an packageReference is required)'
   )
   .command(
