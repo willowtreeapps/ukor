@@ -57,7 +57,8 @@
     "request": "^2.88.0",
     "rimraf": "^2.6.2",
     "winston": "^3.1.0",
-    "xml-writer": "^1.7.0"
+    "xml-writer": "^1.7.0",
+    "git-branch": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
