@@ -41,7 +41,7 @@
     }
   },
   "dependencies": {
-    "@willowtreeapps/wist": "^2.0.1",
+    "wist": "willowtreeapps/wist#v2.0.1",
     "ajv": "^6.5.4",
     "ajv-keywords": "^3.2.0",
     "xml2js": "^0.4.19",
@@ -57,7 +57,8 @@
     "request": "^2.88.0",
     "rimraf": "^2.6.2",
     "winston": "^3.1.0",
-    "xml-writer": "^1.7.0"
+    "xml-writer": "^1.7.0",
+    "git-branch": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",

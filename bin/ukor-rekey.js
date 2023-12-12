@@ -14,6 +14,7 @@ program
     'Specify a roku. Ignored if passed as argument.'
   )
   .option('-a, --auth <user:pass>', 'Set username and password for roku.')
+  .option('-p, --packageConfig <packageConfigName>', 'Specify package config name to be used to get packageReference and packageKey')
   .parse(process.argv)
 
 let args = program.args
@@ -32,11 +33,14 @@ try {
   process.exit(-1)
 }
 
+let packageConfig = program.packageConfig || 'main'
+
 let options = {
   flavor: 'main',
   roku,
   auth,
-  name: ''
+  name: '',
+  packageConfig
 }
 for (let key in options) {
   if (!options[key] && key != 'name') {

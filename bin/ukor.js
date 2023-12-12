@@ -11,11 +11,11 @@ program
     'Bundle then deploy your channel to a named roku'
   )
   .command(
-    'package <flavor> <roku>',
+    'package <flavor> <roku> [-p, --packageConfig]',
     'Package a channel flavor with a roku device'
   )
   .command(
-    'rekey <roku>',
+    'rekey <roku> [-p, --packageConfig]',
     'Rekey your device (an packageReference is required)'
   )
   .command(
